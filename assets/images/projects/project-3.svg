@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="p3bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b" />
+      <stop offset="100%" stop-color="#27272a" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" rx="20" fill="url(#p3bg)" />
+  
+  <rect x="30" y="30" width="740" height="440" rx="12" fill="#09090b" stroke="#27272a" stroke-width="1.5" />
+  
+  <!-- Kanban Topbar -->
+  <rect x="30" y="30" width="740" height="55" rx="12" fill="#18181b" />
+  <circle cx="65" cy="58" r="14" fill="#8b5cf6" />
+  <text x="90" y="63" fill="#fafafa" font-family="sans-serif" font-weight="bold" font-size="16">TaskFlow Pro</text>
+  <rect x="230" y="44" width="80" height="28" rx="6" fill="#27272a" />
+  <text x="245" y="63" fill="#a1a1aa" font-family="sans-serif" font-size="12">Sprint 24</text>
+  
+  <rect x="660" y="44" width="85" height="28" rx="6" fill="#8b5cf6" />
+  <text x="672" y="63" fill="#fff" font-family="sans-serif" font-size="12" font-weight="bold">+ New Task</text>
+
+  <!-- 3 Kanban Columns -->
+  <!-- Col 1: To Do -->
+  <g transform="translate(50, 105)">
+    <rect x="0" y="0" width="220" height="340" rx="8" fill="#18181b" />
+    <circle cx="20" cy="25" r="5" fill="#f59e0b" />
+    <text x="35" y="29" fill="#e4e4e7" font-family="sans-serif" font-weight="bold" font-size="13">TO DO (3)</text>
+    
+    <!-- Task Card 1 -->
+    <rect x="12" y="45" width="196" height="80" rx="6" fill="#27272a" stroke="#3f3f46" stroke-width="1" />
+    <text x="24" y="70" fill="#fafafa" font-family="sans-serif" font-weight="bold" font-size="12">Design system tokens</text>
+    <rect x="24" y="85" width="45" height="18" rx="4" fill="#3b82f6" opacity="0.3" />
+    <text x="29" y="98" fill="#60a5fa" font-family="sans-serif" font-size="10">Design</text>
+    <circle cx="185" cy="95" r="10" fill="#a855f7" />
+
+    <!-- Task Card 2 -->
+    <rect x="12" y="135" width="196" height="80" rx="6" fill="#27272a" stroke="#3f3f46" stroke-width="1" />
+    <text x="24" y="160" fill="#fafafa" font-family="sans-serif" font-weight="bold" font-size="12">Setup Redis Cache</text>
+    <rect x="24" y="175" width="55" height="18" rx="4" fill="#ef4444" opacity="0.3" />
+    <text x="29" y="188" fill="#f87171" font-family="sans-serif" font-size="10">Backend</text>
+    <circle cx="185" cy="185" r="10" fill="#10b981" />
+  </g>
+
+  <!-- Col 2: In Progress -->
+  <g transform="translate(290, 105)">
+    <rect x="0" y="0" width="220" height="340" rx="8" fill="#18181b" />
+    <circle cx="20" cy="25" r="5" fill="#3b82f6" />
+    <text x="35" y="29" fill="#e4e4e7" font-family="sans-serif" font-weight="bold" font-size="13">IN PROGRESS (2)</text>
+    
+    <!-- Task Card 1 -->
+    <rect x="12" y="45" width="196" height="95" rx="6" fill="#27272a" stroke="#6366f1" stroke-width="1.5" />
+    <text x="24" y="70" fill="#fafafa" font-family="sans-serif" font-weight="bold" font-size="12">OAuth 2.0 Auth Flow</text>
+    <rect x="24" y="85" width="60" height="18" rx="4" fill="#10b981" opacity="0.3" />
+    <text x="29" y="98" fill="#34d399" font-family="sans-serif" font-size="10">Security</text>
+    <rect x="24" y="112" width="140" height="6" rx="3" fill="#3f3f46" />
+    <rect x="24" y="112" width="100" height="6" rx="3" fill="#8b5cf6" />
+    <circle cx="185" cy="100" r="10" fill="#ec4899" />
+  </g>
+
+  <!-- Col 3: Done -->
+  <g transform="translate(530, 105)">
+    <rect x="0" y="0" width="220" height="340" rx="8" fill="#18181b" />
+    <circle cx="20" cy="25" r="5" fill="#10b981" />
+    <text x="35" y="29" fill="#e4e4e7" font-family="sans-serif" font-weight="bold" font-size="13">COMPLETED (8)</text>
+    
+    <!-- Task Card 1 -->
+    <rect x="12" y="45" width="196" height="70" rx="6" fill="#27272a" stroke="#22c55e" stroke-width="1" />
+    <text x="24" y="70" fill="#a1a1aa" font-family="sans-serif" font-size="12" text-decoration="line-through">Database Schema</text>
+    <text x="24" y="95" fill="#10b981" font-family="sans-serif" font-size="10">✓ Merged to main</text>
+  </g>
+</svg>

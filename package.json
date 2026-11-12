@@ -1,0 +1,19 @@
+{
+  "name": "yudha-portfolio",
+  "version": "1.0.0",
+  "description": "Modern, interactive, responsive developer portfolio by Yudha",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "portfolio",
+    "developer",
+    "fullstack",
+    "responsive",
+    "modern"
+  ],
+  "author": "Yudha",
+  "license": "MIT"
+}
