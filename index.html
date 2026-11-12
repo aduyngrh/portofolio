@@ -37,49 +37,55 @@
   <div class="ambient-glow ambient-glow-2"></div>
 
   <!-- ==========================================================================
-       NAVBAR
+       NAVBAR (FLOATING PILL DESIGN)
        ========================================================================== -->
-  <header class="navbar" id="navbar">
-    <div class="container nav-container">
-      <a href="#beranda" class="nav-logo">
-        <span>Yudha</span>
-        <span class="nav-logo-badge">DEV</span>
-      </a>
-
-      <!-- Desktop Nav Links -->
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#beranda" class="nav-link active">Beranda</a></li>
-        <li><a href="#tentang" class="nav-link">Tentang</a></li>
-        <li><a href="#keahlian" class="nav-link">Keahlian</a></li>
-        <li><a href="#proyek" class="nav-link">Proyek</a></li>
-        <li><a href="#playground" class="nav-link">Playground</a></li>
-        <li><a href="#kontak" class="nav-link">Kontak</a></li>
-      </ul>
-
-      <!-- Action Buttons -->
-      <div class="nav-actions">
-        <!-- Sound FX Toggle -->
-        <button class="icon-btn" id="sound-toggle-btn" aria-label="Toggle Efek Suara" title="Efek Suara">
-          <span id="sound-icon">🔇</span>
-        </button>
-
-        <!-- Dark / Light Theme Toggle -->
-        <button class="icon-btn" id="theme-toggle-btn" aria-label="Ganti Tema Gelap/Terang" title="Ganti Tema">
-          <span id="theme-icon">☀️</span>
-        </button>
-
-        <a href="#kontak" class="btn btn-primary btn-sm" style="display: none; @media(min-width: 600px){display: inline-flex;}">
-          Hubungi Saya
+  <header class="navbar-wrapper">
+    <nav class="navbar floating-pill" id="navbar">
+      <div class="nav-container">
+        <!-- Logo -->
+        <a href="#beranda" class="nav-logo">
+          <span class="nav-avatar-dot"></span>
+          <span class="nav-logo-text">Yudha</span>
+          <span class="nav-logo-badge">DEV</span>
         </a>
 
-        <!-- Mobile Menu Toggle Button -->
-        <button class="nav-mobile-toggle" id="nav-mobile-toggle" aria-label="Menu Navigasi Mobile">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <!-- Desktop Nav Links (Pill Style) -->
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#beranda" class="nav-link active">Beranda</a></li>
+          <li><a href="#tentang" class="nav-link">Tentang</a></li>
+          <li><a href="#keahlian" class="nav-link">Keahlian</a></li>
+          <li><a href="#proyek" class="nav-link">Proyek</a></li>
+          <li><a href="#playground" class="nav-link">Playground</a></li>
+          <li><a href="#kontak" class="nav-link">Kontak</a></li>
+        </ul>
+
+        <!-- Action Buttons inside Pill -->
+        <div class="nav-actions">
+          <!-- Sound FX Toggle -->
+          <button class="icon-btn" id="sound-toggle-btn" aria-label="Toggle Efek Suara" title="Efek Suara">
+            <span id="sound-icon">🔇</span>
+          </button>
+
+          <!-- Dark / Light Theme Toggle -->
+          <button class="icon-btn" id="theme-toggle-btn" aria-label="Ganti Tema Gelap/Terang" title="Ganti Tema">
+            <span id="theme-icon">☀️</span>
+          </button>
+
+          <!-- Contact CTA Pill Button -->
+          <a href="#kontak" class="btn btn-primary btn-sm btn-pill nav-cta">
+            <span>Hubungi</span>
+            <span>💬</span>
+          </a>
+
+          <!-- Mobile Menu Toggle Button -->
+          <button class="nav-mobile-toggle" id="nav-mobile-toggle" aria-label="Menu Navigasi Mobile">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
-    </div>
+    </nav>
   </header>
 
   <!-- ==========================================================================

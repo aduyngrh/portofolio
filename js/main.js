@@ -117,6 +117,13 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.classList.remove('mobile-open');
       });
     });
+
+    // Close when clicking outside of floating pill
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#navbar') && navLinks.classList.contains('mobile-open')) {
+        navLinks.classList.remove('mobile-open');
+      }
+    });
   }
 
   // Active section spy
