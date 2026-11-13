@@ -12,6 +12,7 @@ Portofolio web modern, interaktif, responsif, berkecepatan tinggi, dan **bebas c
    - Latar belakang partikel konstelasi interaktif 60 FPS pada HTML5 Canvas (otomatis hemat daya saat tab tidak aktif).
 
 2. **Interaktivitas Maksimal Tanpa Bug / Crash**:
+   - **Command Palette (`Ctrl + K` / `Cmd + K` / `/`)**: Fitur pencarian kilat ala macOS Spotlight, Linear, dan Raycast. Pengunjung dapat mencari proyek berdasarkan nama/teknologi, melompat ke seksi manapun, menyalin email, mengunduh CV, atau mengganti tema dalam sekejap dengan navigasi keyboard (`↑`, `↓`, `↵`).
    - **Typewriter Effect**: Teks dinamis yang berganti peran secara berkala di bagian Hero.
    - **Filter Kategori Proyek**: Filter proyek instan berdasarkan kategori (*Web Application*, *AI & Full-Stack*, *Fintech & Mobile*, *Design System*).
    - **Modal Detail Proyek**: Dialog popup interaktif lengkap dengan deskripsi mendalam, poin fitur, teknologi, serta tautan ke Live Demo dan GitHub.
