@@ -54,17 +54,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 3. NAVBAR SCROLL & SCROLL PROGRESS
+  // 3. NAVBAR SCROLL & SCROLL PROGRESS (SILKY 60FPS)
   // ==========================================
   const navbar = document.getElementById('navbar');
   const scrollProgress = document.getElementById('scroll-progress');
   const backToTopBtn = document.getElementById('back-to-top');
 
-  window.addEventListener('scroll', () => {
+  const trackedSections = Array.from(document.querySelectorAll('section[id]'));
+  const navLinksMap = new Map();
+  document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
+    const hash = link.getAttribute('href');
+    if (hash && hash.length > 1) {
+      navLinksMap.set(hash.slice(1), link);
+    }
+  });
+
+  let currentActiveId = 'beranda';
+  let isScrollTicking = false;
+
+  function handleScrollFrame() {
     const scrollY = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    
-    // Navbar glass blur
+
+    // Navbar glass effect
     if (navbar) {
       if (scrollY > 30) {
         navbar.classList.add('scrolled');
@@ -88,9 +100,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Scroll spy for active navbar link
-    updateActiveNav();
-  });
+    // Active section spy (Non-blocking cached traversal)
+    const scrollPos = scrollY + 220;
+    let newActiveId = currentActiveId;
+
+    for (let i = trackedSections.length - 1; i >= 0; i--) {
+      const sec = trackedSections[i];
+      if (scrollPos >= sec.offsetTop) {
+        newActiveId = sec.id;
+        break;
+      }
+    }
+
+    if (newActiveId !== currentActiveId) {
+      const prevLink = navLinksMap.get(currentActiveId);
+      const nextLink = navLinksMap.get(newActiveId);
+      if (prevLink) prevLink.classList.remove('active');
+      if (nextLink) nextLink.classList.add('active');
+      currentActiveId = newActiveId;
+    }
+
+    isScrollTicking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!isScrollTicking) {
+      window.requestAnimationFrame(handleScrollFrame);
+      isScrollTicking = true;
+    }
+  }, { passive: true });
 
   if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => {
@@ -122,26 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
       if (!e.target.closest('#navbar') && navLinks.classList.contains('mobile-open')) {
         navLinks.classList.remove('mobile-open');
-      }
-    });
-  }
-
-  // Active section spy
-  function updateActiveNav() {
-    const sections = document.querySelectorAll('section[id]');
-    const scrollPos = window.scrollY + 180;
-
-    sections.forEach(sec => {
-      const top = sec.offsetTop;
-      const height = sec.offsetHeight;
-      const id = sec.getAttribute('id');
-      const link = document.querySelector(`.nav-link[href="#${id}"]`);
-
-      if (link) {
-        if (scrollPos >= top && scrollPos < top + height) {
-          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
-        }
       }
     });
   }

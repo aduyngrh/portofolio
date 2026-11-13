@@ -77,6 +77,7 @@ html {
   overflow-x: hidden;
   max-width: 100%;
   width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -87,6 +88,7 @@ body {
   overflow-x: hidden;
   max-width: 100%;
   width: 100%;
+  -webkit-overflow-scrolling: touch;
   transition: background-color var(--transition-smooth), color var(--transition-smooth);
   position: relative;
   min-height: 100vh;
@@ -1864,6 +1866,44 @@ textarea.form-control {
     padding: 0 1rem;
     max-width: 100%;
     overflow-x: hidden;
+  }
+
+  /* Disable heavy multi-layer blur filters on mobile for buttery smooth 60-120fps scrolling */
+  .ambient-glow {
+    display: none !important;
+  }
+
+  .about-card,
+  .timeline-box,
+  .playground-card,
+  .contact-form-card,
+  .skill-category-card,
+  .testimonial-card,
+  .project-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(17, 24, 39, 0.95);
+  }
+
+  [data-theme="light"] .about-card,
+  [data-theme="light"] .timeline-box,
+  [data-theme="light"] .playground-card,
+  [data-theme="light"] .contact-form-card,
+  [data-theme="light"] .skill-category-card,
+  [data-theme="light"] .testimonial-card,
+  [data-theme="light"] .project-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  /* GPU Hardware Acceleration for persistent floating elements */
+  #scroll-progress,
+  .navbar-wrapper,
+  .navbar.floating-pill,
+  .back-to-top {
+    transform: translateZ(0);
+    will-change: transform;
   }
 
   /* Floating Pill Navbar on Mobile */

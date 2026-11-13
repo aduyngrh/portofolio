@@ -11,6 +11,9 @@
   let particles = [];
   let width = 0;
   let height = 0;
+  let isMobile = false;
+  let isScrolling = false;
+  let scrollTimeout = null;
 
   const mouse = {
     x: null,
@@ -25,20 +28,21 @@
   function resize() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
+    isMobile = width < 768;
     initParticles();
   }
 
   function initParticles() {
     particles = [];
-    // Batasi jumlah partikel agar performa tetap 60 FPS di semua perangkat
-    const count = Math.min(Math.floor((width * height) / 18000), 65);
+    // Batasi partikel di mobile agar performa scroll tetap 60-120 FPS
+    const count = isMobile ? 15 : Math.min(Math.floor((width * height) / 18000), 55);
 
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
+        vx: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.6),
+        vy: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.6),
         radius: Math.random() * 2 + 1,
         alpha: Math.random() * 0.4 + 0.2
       });
@@ -46,6 +50,12 @@
   }
 
   function draw() {
+    // Di mobile, lewati repaint canvas saat layar sedang aktif di-scroll agar touch scrolling 100% mulus
+    if (isMobile && isScrolling) {
+      animationFrameId = requestAnimationFrame(draw);
+      return;
+    }
+
     ctx.clearRect(0, 0, width, height);
 
     const dark = isDarkMode();
@@ -63,8 +73,8 @@
       if (p.x < 0 || p.x > width) p.vx *= -1;
       if (p.y < 0 || p.y > height) p.vy *= -1;
 
-      // Subtle mouse interaction
-      if (mouse.x !== null && mouse.y !== null) {
+      // Subtle mouse interaction (desktop only)
+      if (!isMobile && mouse.x !== null && mouse.y !== null) {
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -81,15 +91,16 @@
       ctx.fillStyle = `rgba(${particleColor}, ${p.alpha})`;
       ctx.fill();
 
-      // Connect near particles
+      // Connect near particles (di mobile hanya connect jarak dekat sekali agar ringan)
+      const maxDist = isMobile ? 65 : 110;
       for (let j = i + 1; j < particles.length; j++) {
         const p2 = particles[j];
         const dx = p.x - p2.x;
         const dy = p.y - p2.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < 110) {
-          const alpha = (1 - dist / 110) * (dark ? 0.15 : 0.08);
+        if (dist < maxDist) {
+          const alpha = (1 - dist / maxDist) * (dark ? 0.15 : 0.08);
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p2.x, p2.y);
@@ -102,6 +113,17 @@
 
     animationFrameId = requestAnimationFrame(draw);
   }
+
+  // Event Listeners dengan throttle/debounce
+  window.addEventListener('scroll', () => {
+    if (isMobile) {
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+      }, 90);
+    }
+  }, { passive: true });
 
   // Event Listeners dengan throttle/debounce
   window.addEventListener('resize', () => {
