@@ -74,6 +74,9 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
 }
 
 body {
@@ -82,6 +85,8 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
   transition: background-color var(--transition-smooth), color var(--transition-smooth);
   position: relative;
   min-height: 100vh;
@@ -120,8 +125,9 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
   pointer-events: none;
   z-index: 0;
 }
@@ -134,19 +140,21 @@ body {
   pointer-events: none;
   z-index: 0;
   opacity: 0.15;
+  max-width: 100vw;
+  overflow: hidden;
 }
 .ambient-glow-1 {
   top: -10%;
-  right: -5%;
-  width: 500px;
-  height: 500px;
+  right: 0;
+  width: 380px;
+  height: 380px;
   background: radial-gradient(circle, #6366f1 0%, transparent 70%);
 }
 .ambient-glow-2 {
   bottom: 10%;
-  left: -5%;
-  width: 450px;
-  height: 450px;
+  left: 0;
+  width: 350px;
+  height: 350px;
   background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
 }
 
@@ -1268,6 +1276,8 @@ body {
   padding: 1.2rem 1.5rem;
   border-radius: var(--radius-md);
   transition: border-color var(--transition-fast);
+  max-width: 100%;
+  overflow: hidden;
 }
 .contact-item:hover {
   border-color: var(--accent-primary);
@@ -1283,6 +1293,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
+  flex-shrink: 0;
 }
 
 .contact-label {
@@ -1297,6 +1308,8 @@ body {
   font-weight: 600;
   color: var(--text-primary);
   text-decoration: none;
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 .contact-val:hover {
   color: var(--accent-primary);
@@ -1782,10 +1795,20 @@ textarea.form-control {
 /* ==========================================================================
    RESPONSIVE DESIGN (MEDIA QUERIES)
    ========================================================================== */
+/* ==========================================================================
+   RESPONSIVE DESIGN (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .nav-cta {
+    display: none;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-grid {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 2.5rem;
   }
   .hero-typed-wrapper {
     justify-content: center;
@@ -1801,22 +1824,17 @@ textarea.form-control {
   }
   .about-grid, .contact-grid, .playground-grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
   .projects-grid, .skills-categories, .testimonials-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
   }
   .stat-item:nth-child(2) {
     border-right: none;
-  }
-}
-
-@media (max-width: 1100px) {
-  .nav-cta {
-    display: none;
   }
 }
 
@@ -1835,45 +1853,66 @@ textarea.form-control {
 }
 
 @media (max-width: 768px) {
-  .nav-search-btn {
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    justify-content: center;
-    border-radius: 50%;
-  }
-  .nav-search-text,
-  .nav-search-kbd {
-    display: none;
+  /* Prevent Any Horizontal Overflow */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
   }
 
-  .cmd-backdrop {
-    padding: 5vh 1rem 1rem;
+  .container {
+    padding: 0 1rem;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
-  .cmd-footer-brand {
-    display: none;
-  }
-
+  /* Floating Pill Navbar on Mobile */
   .navbar-wrapper {
-    top: 0.8rem;
-    padding: 0 0.8rem;
+    top: 0.6rem;
+    padding: 0 0.6rem;
+    box-sizing: border-box;
   }
 
   .navbar.floating-pill {
-    padding: 0.35rem 0.5rem 0.35rem 1rem;
+    padding: 0.35rem 0.5rem 0.35rem 0.9rem;
+    box-sizing: border-box;
+  }
+
+  .nav-container {
+    gap: 0.4rem;
+  }
+
+  .nav-logo {
+    font-size: 1.15rem;
+    gap: 0.4rem;
+  }
+
+  .nav-logo-badge {
+    font-size: 0.65rem;
+    padding: 0.12rem 0.35rem;
+  }
+
+  .nav-actions {
+    gap: 0.35rem;
+  }
+
+  .nav-search-btn,
+  .icon-btn,
+  .nav-mobile-toggle {
+    width: 35px;
+    height: 35px;
   }
 
   .nav-links {
     position: absolute;
-    top: calc(100% + 0.6rem);
+    top: calc(100% + 0.5rem);
     left: 0;
     width: 100%;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     flex-direction: column;
-    padding: 1rem;
+    padding: 0.8rem;
     gap: 0.3rem;
     box-shadow: var(--shadow-lg);
     backdrop-filter: blur(24px);
@@ -1883,6 +1922,7 @@ textarea.form-control {
     transform: translateY(-8px) scale(0.96);
     transition: all var(--transition-smooth);
     pointer-events: none;
+    box-sizing: border-box;
   }
 
   .nav-links.mobile-open {
@@ -1895,33 +1935,308 @@ textarea.form-control {
   .nav-link {
     width: 100%;
     text-align: center;
-    padding: 0.6rem 1rem;
+    padding: 0.55rem 1rem;
+    font-size: 0.88rem;
   }
 
   .nav-mobile-toggle {
     display: flex;
   }
 
+  /* Hero Section */
+  .hero {
+    padding-top: 6rem;
+    min-height: auto;
+    padding-bottom: 2rem;
+  }
+
   .hero-title {
-    font-size: 2.6rem;
+    font-size: clamp(2rem, 7vw, 2.5rem);
+    word-break: break-word;
   }
-  .projects-grid, .skills-categories, .testimonials-grid {
+
+  .hero-typed-wrapper {
+    font-size: 1.2rem;
+    flex-wrap: wrap;
+    min-height: auto;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  .hero-bio {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.7rem 1.2rem;
+  }
+
+  /* Avatar & Badges: NO NEGATIVE MARGINS OR OVERFLOW */
+  .hero-visual {
+    width: 100%;
+    overflow: hidden;
+    padding: 1rem 0;
+  }
+
+  .avatar-wrapper {
+    width: 230px;
+    height: 230px;
+    margin: 0 auto;
+  }
+
+  .floating-badge {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+    max-width: 80%;
+  }
+
+  .floating-badge-1 {
+    top: 5%;
+    left: 0;
+    animation: none;
+  }
+
+  .floating-badge-2 {
+    bottom: 5%;
+    right: 0;
+    animation: none;
+  }
+
+  /* Sections & Titles */
+  .section-header {
+    margin-bottom: 2.2rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 5.5vw, 2rem);
+  }
+
+  .section-subtitle {
+    font-size: 0.92rem;
+  }
+
+  .about-section,
+  .skills-section,
+  .projects-section,
+  .playground-section,
+  .testimonials-section,
+  .contact-section {
+    padding: 3rem 0;
+  }
+
+  /* Cards & Layout */
+  .about-card,
+  .timeline-box,
+  .playground-card,
+  .contact-form-card,
+  .skill-category-card,
+  .testimonial-card {
+    padding: 1.5rem 1.1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .about-highlights {
     grid-template-columns: 1fr;
+    gap: 0.65rem;
   }
+
+  .highlight-pill {
+    font-size: 0.85rem;
+    padding: 0.65rem 0.85rem;
+  }
+
+  /* Stats Section */
+  .stats-section {
+    padding: 1.5rem 0;
+    margin-bottom: 2.5rem;
+  }
+
   .stats-grid {
     grid-template-columns: 1fr;
+    padding: 1.5rem 1rem;
+    gap: 1.2rem;
   }
+
   .stat-item {
     border-right: none;
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.2rem;
   }
+
   .stat-item:last-child {
     border-bottom: none;
     padding-bottom: 0;
   }
+
+  .stat-number {
+    font-size: 2.2rem;
+  }
+
+  /* Projects & Filters */
+  .project-filters {
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .filter-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.82rem;
+  }
+
+  .projects-grid,
+  .skills-categories,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .project-thumbnail {
+    height: 180px;
+  }
+
+  .project-content {
+    padding: 1.4rem;
+  }
+
+  .project-actions {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .project-actions .btn {
+    flex: 1 1 auto;
+    font-size: 0.82rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  /* Playground Demo */
+  .playground-preview-box {
+    padding: 1.25rem 0.5rem;
+    min-height: auto;
+  }
+
+  .demo-interactive-card {
+    padding: 1rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #playground-code {
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-width: 100%;
+    font-size: 0.7rem;
+  }
+
+  /* Contact Items */
+  .contact-item {
+    padding: 1rem 0.85rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-icon-box {
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
+  }
+
+  .contact-val {
+    font-size: 0.88rem;
+  }
+
+  .copy-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  /* Footer */
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.2rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  /* Modals */
+  .modal-backdrop,
+  .cmd-backdrop {
+    padding: 1rem 0.6rem;
+    box-sizing: border-box;
+  }
+
+  .modal-dialog,
+  .cmd-dialog {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    border-radius: var(--radius-md);
+  }
+
+  .modal-header,
+  .cmd-header {
+    padding: 1rem 1.1rem;
+  }
+
+  .modal-body {
+    padding: 1.25rem 1rem;
+  }
+
+  .cmd-footer-brand {
+    display: none;
+  }
+
+  .back-to-top {
+    bottom: 1.2rem;
+    right: 1.2rem;
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo-text {
+    font-size: 1.05rem;
+  }
+
+  .nav-logo-badge {
+    display: none;
+  }
+
+  .nav-actions {
+    gap: 0.25rem;
+  }
+
+  .nav-search-btn,
+  .icon-btn,
+  .nav-mobile-toggle {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .hero-status {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.75rem;
+  }
+
   .avatar-wrapper {
-    width: 270px;
-    height: 270px;
+    width: 200px;
+    height: 200px;
   }
 }
