@@ -429,6 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') {
       closeProjectModal();
       closeCvModal();
+      if (typeof closeCmdPalette === 'function') closeCmdPalette();
     }
   });
 
@@ -552,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const copyEmailBtn = document.getElementById('copy-email-btn');
   if (copyEmailBtn) {
     copyEmailBtn.addEventListener('click', () => {
-      const email = data.profile ? data.profile.email : 'yudha.dev@example.com';
+      const email = data.profile ? data.profile.email : 'yudhanugraha081@gmail.com';
       navigator.clipboard.writeText(email).then(() => {
         showToast(`Email ${email} berhasil disalin! 📋`);
         const originalText = copyEmailBtn.textContent;
@@ -661,4 +662,246 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     document.querySelectorAll('.hero .reveal-on-scroll').forEach(el => el.classList.add('revealed'));
   }, 100);
+
+  // ==========================================
+  // 18. COMMAND PALETTE (CTRL + K / SPOTLIGHT)
+  // ==========================================
+  const cmdPaletteBtn = document.getElementById('cmd-palette-btn');
+  const cmdPaletteModal = document.getElementById('cmd-palette-modal');
+  const cmdInput = document.getElementById('cmd-input');
+  const cmdResults = document.getElementById('cmd-results');
+  const cmdCloseBtn = document.getElementById('cmd-close-btn');
+
+  let activeFilteredCommands = [];
+  let selectedIndex = 0;
+
+  function buildCommandList() {
+    const list = [
+      // Quick Actions
+      { id: 'cv', group: 'Aksi Cepat', title: 'Lihat & Unduh Resume / CV', desc: 'Ringkasan keahlian & opsi cetak PDF', icon: '📄', badge: 'Aksi', action: () => { if (cvModalBtn) cvModalBtn.click(); } },
+      { id: 'theme', group: 'Aksi Cepat', title: 'Ganti Tema (Gelap / Terang)', desc: 'Alihkan mode tampilan layar', icon: '🌓', badge: 'Aksi', action: () => { if (themeToggleBtn) themeToggleBtn.click(); } },
+      { id: 'sound', group: 'Aksi Cepat', title: 'Toggle Efek Suara', desc: 'Aktifkan atau senyapkan efek audio synthesizer', icon: '🔊', badge: 'Aksi', action: () => { if (soundToggleBtn) soundToggleBtn.click(); } },
+      { id: 'copy-email', group: 'Aksi Cepat', title: 'Salin Alamat Email', desc: data.profile ? data.profile.email : 'yudhanugraha081@gmail.com', icon: '📋', badge: 'Aksi', action: () => { if (copyEmailBtn) copyEmailBtn.click(); } },
+      { id: 'whatsapp', group: 'Aksi Cepat', title: 'Chat Cepat via WhatsApp', desc: 'Kirim pesan langsung ke WhatsApp Yudha', icon: '💬', badge: 'Tautan', action: () => { const num = data.profile && data.profile.whatsapp ? data.profile.whatsapp.replace(/[^0-9]/g, '') : '6281234567890'; window.open(`https://wa.me/${num}?text=Halo%20Yudha,%20saya%20tertarik%20bekerja%20sama%20dengan%20Anda.`, '_blank'); } },
+      { id: 'github', group: 'Aksi Cepat', title: 'Buka Profil GitHub', desc: data.profile && data.profile.github ? data.profile.github : 'https://github.com/aduyngrh', icon: '🐙', badge: 'Tautan', action: () => { window.open(data.profile && data.profile.github ? data.profile.github : 'https://github.com/aduyngrh', '_blank'); } },
+      { id: 'linkedin', group: 'Aksi Cepat', title: 'Buka Profil LinkedIn', desc: data.profile && data.profile.linkedin ? data.profile.linkedin : 'https://linkedin.com/in/yudhanugraha', icon: '💼', badge: 'Tautan', action: () => { window.open(data.profile && data.profile.linkedin ? data.profile.linkedin : 'https://linkedin.com/in/yudhanugraha', '_blank'); } },
+
+      // Navigation
+      { id: 'nav-beranda', group: 'Navigasi Cepat', title: 'Beranda', desc: 'Kembali ke bagian teratas', icon: '🏠', badge: 'Navigasi', action: () => scrollToSection('beranda') },
+      { id: 'nav-tentang', group: 'Navigasi Cepat', title: 'Tentang Saya', desc: 'Perjalanan, filosofi kerja & riwayat karier', icon: '👤', badge: 'Navigasi', action: () => scrollToSection('tentang') },
+      { id: 'nav-keahlian', group: 'Navigasi Cepat', title: 'Keahlian Teknis', desc: 'Tech stack frontend, backend & tools', icon: '🛠️', badge: 'Navigasi', action: () => scrollToSection('keahlian') },
+      { id: 'nav-proyek', group: 'Navigasi Cepat', title: 'Portofolio Karya', desc: 'Daftar aplikasi & proyek unggulan', icon: '📂', badge: 'Navigasi', action: () => scrollToSection('proyek') },
+      { id: 'nav-playground', group: 'Navigasi Cepat', title: 'Interactive Playground', desc: 'Live Glassmorphism Card Styler demo', icon: '💎', badge: 'Demo', action: () => scrollToSection('playground') },
+      { id: 'nav-kontak', group: 'Navigasi Cepat', title: 'Hubungi Saya', desc: 'Kirim formulir pesan & info kontak', icon: '✉️', badge: 'Navigasi', action: () => scrollToSection('kontak') }
+    ];
+
+    // Dynamic Projects from PORTFOLIO_DATA
+    if (data.projects && Array.isArray(data.projects)) {
+      data.projects.forEach(proj => {
+        list.push({
+          id: `proj-${proj.id}`,
+          group: 'Proyek Unggulan',
+          title: proj.title,
+          desc: `${proj.categoryLabel} • ${(proj.techStack || []).slice(0, 3).join(', ')}`,
+          icon: '🚀',
+          badge: 'Proyek',
+          keywords: (proj.techStack || []).join(' ') + ' ' + (proj.highlights || ''),
+          action: () => {
+            if (window.openProjectModal) window.openProjectModal(proj.id);
+          }
+        });
+      });
+    }
+
+    return list;
+  }
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function openCmdPalette() {
+    if (!cmdPaletteModal) return;
+    cmdPaletteModal.classList.add('open');
+    cmdPaletteModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (cmdInput) {
+      cmdInput.value = '';
+      setTimeout(() => cmdInput.focus(), 60);
+    }
+    renderCmdResults('');
+    if (window.SoundFX) window.SoundFX.modalOpen();
+  }
+
+  window.closeCmdPalette = function() {
+    if (!cmdPaletteModal || !cmdPaletteModal.classList.contains('open')) return;
+    cmdPaletteModal.classList.remove('open');
+    cmdPaletteModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (window.SoundFX) window.SoundFX.modalClose();
+  };
+
+  function renderCmdResults(query) {
+    if (!cmdResults) return;
+    const q = query.trim().toLowerCase();
+    const all = buildCommandList();
+
+    if (!q) {
+      activeFilteredCommands = all;
+    } else {
+      activeFilteredCommands = all.filter(item => {
+        const titleMatch = item.title.toLowerCase().includes(q);
+        const descMatch = (item.desc || '').toLowerCase().includes(q);
+        const kwMatch = (item.keywords || '').toLowerCase().includes(q);
+        const badgeMatch = (item.badge || '').toLowerCase().includes(q);
+        return titleMatch || descMatch || kwMatch || badgeMatch;
+      });
+    }
+
+    selectedIndex = 0;
+
+    if (activeFilteredCommands.length === 0) {
+      cmdResults.innerHTML = `
+        <div class="cmd-empty">
+          <span class="cmd-empty-icon">🔍</span>
+          <p>Tidak ditemukan perintah atau proyek untuk "<strong>${escapeHtml(query)}</strong>"</p>
+          <p style="font-size: 0.8rem; margin-top: 0.4rem; color: var(--text-muted);">Coba cari kata kunci seperti "React", "CV", "Kontak", atau "Tema".</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Group items
+    const groups = {};
+    activeFilteredCommands.forEach((item, idx) => {
+      if (!groups[item.group]) groups[item.group] = [];
+      groups[item.group].push({ item, globalIdx: idx });
+    });
+
+    let html = '';
+    for (const [groupName, items] of Object.entries(groups)) {
+      html += `<div class="cmd-group"><div class="cmd-group-title">${groupName}</div>`;
+      items.forEach(({ item, globalIdx }) => {
+        const isSelected = globalIdx === selectedIndex ? 'selected' : '';
+        html += `
+          <div class="cmd-item ${isSelected}" data-index="${globalIdx}">
+            <div class="cmd-item-left">
+              <span class="cmd-item-icon">${item.icon}</span>
+              <div>
+                <span class="cmd-item-title">${item.title}</span>
+                <span class="cmd-item-desc">${item.desc}</span>
+              </div>
+            </div>
+            <span class="cmd-item-badge">${item.badge}</span>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    cmdResults.innerHTML = html;
+
+    // Attach click events
+    cmdResults.querySelectorAll('.cmd-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const idx = parseInt(el.getAttribute('data-index'), 10);
+        executeCmdIndex(idx);
+      });
+      el.addEventListener('mouseenter', () => {
+        const idx = parseInt(el.getAttribute('data-index'), 10);
+        updateSelectionHighlight(idx);
+      });
+    });
+  }
+
+  function updateSelectionHighlight(newIdx) {
+    if (activeFilteredCommands.length === 0) return;
+    selectedIndex = Math.max(0, Math.min(newIdx, activeFilteredCommands.length - 1));
+
+    const items = cmdResults.querySelectorAll('.cmd-item');
+    items.forEach(el => {
+      const idx = parseInt(el.getAttribute('data-index'), 10);
+      if (idx === selectedIndex) {
+        el.classList.add('selected');
+        el.scrollIntoView({ block: 'nearest' });
+      } else {
+        el.classList.remove('selected');
+      }
+    });
+  }
+
+  function executeCmdIndex(idx) {
+    const cmd = activeFilteredCommands[idx];
+    if (cmd && typeof cmd.action === 'function') {
+      window.closeCmdPalette();
+      if (window.SoundFX) window.SoundFX.click();
+      setTimeout(() => cmd.action(), 100);
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  if (cmdPaletteBtn) {
+    cmdPaletteBtn.addEventListener('click', openCmdPalette);
+  }
+
+  if (cmdCloseBtn) {
+    cmdCloseBtn.addEventListener('click', window.closeCmdPalette);
+  }
+
+  if (cmdPaletteModal) {
+    cmdPaletteModal.addEventListener('click', (e) => {
+      if (e.target === cmdPaletteModal) window.closeCmdPalette();
+    });
+  }
+
+  if (cmdInput) {
+    cmdInput.addEventListener('input', (e) => {
+      renderCmdResults(e.target.value);
+    });
+
+    cmdInput.addEventListener('keydown', (e) => {
+      if (activeFilteredCommands.length === 0) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = (selectedIndex + 1) % activeFilteredCommands.length;
+        updateSelectionHighlight(next);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = (selectedIndex - 1 + activeFilteredCommands.length) % activeFilteredCommands.length;
+        updateSelectionHighlight(prev);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        executeCmdIndex(selectedIndex);
+      }
+    });
+  }
+
+  // Global Keyboard Shortcuts (Ctrl+K, Cmd+K, and '/')
+  window.addEventListener('keydown', (e) => {
+    // Check for Ctrl+K or Cmd+K
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (cmdPaletteModal && cmdPaletteModal.classList.contains('open')) {
+        window.closeCmdPalette();
+      } else {
+        openCmdPalette();
+      }
+      return;
+    }
+
+    // Quick trigger with '/' when not typing in an input/textarea
+    if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+      if (cmdPaletteModal && !cmdPaletteModal.classList.contains('open')) {
+        e.preventDefault();
+        openCmdPalette();
+      }
+    }
+  });
 });
