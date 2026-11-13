@@ -13,7 +13,7 @@ const PORTFOLIO_DATA = {
     email: "yudhanugraha081@gmail.com",
     whatsapp: "+6281234567890",
     github: "https://github.com/aduyngrh",
-    linkedin: "https://linkedin.com/in/yudhanugraha",
+    linkedin: "https://linkedin.com/in/YudhaNugraha-",
     instagram: "https://instagram.com/yudhanugraha",
     bio: "Saya adalah software developer dengan passion mendalam dalam membangun aplikasi web modern berskala tinggi, antarmuka pengguna yang memikat, serta arsitektur backend yang kokoh. Berfokus pada kode yang bersih, performa optimal, dan pengalaman pengguna yang mulus.",
     stats: [
