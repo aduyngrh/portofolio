@@ -14,8 +14,26 @@
   let height = 0;
   let isMobile = false;
   let isScrolling = false;
+  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let particlesEnabled = true;
   let scrollTimeout = null;
   let isAnimating = false;
+
+  function isMobileDevice() {
+    return window.matchMedia('(max-width: 767px)').matches || ('ontouchstart' in window);
+  }
+
+  function updateParticleState() {
+    const isLowPowerDevice = isMobileDevice() && (navigator.hardwareConcurrency || 2) <= 4;
+    particlesEnabled = !reducedMotionQuery.matches && !isLowPowerDevice;
+    if (!particlesEnabled) {
+      stopAnimation();
+      particles = [];
+      ctx.clearRect(0, 0, width, height);
+    } else if (!document.hidden && !isScrolling) {
+      startAnimation();
+    }
+  }
 
   const mouse = {
     x: null,
@@ -30,8 +48,8 @@
   function resize() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-    isMobile = window.innerWidth < 768 || ('ontouchstart' in window);
-    initParticles();
+    isMobile = isMobileDevice();
+    if (particlesEnabled) initParticles();
   }
 
   function initParticles() {
@@ -52,7 +70,7 @@
   }
 
   function startAnimation() {
-    if (isAnimating) return;
+    if (!particlesEnabled || document.hidden || isScrolling || isAnimating) return;
     isAnimating = true;
     animationFrameId = requestAnimationFrame(draw);
   }
@@ -173,7 +191,10 @@
     }
   });
 
+  reducedMotionQuery.addEventListener('change', updateParticleState);
+  window.addEventListener('resize', updateParticleState);
+
   // Start
   resize();
-  startAnimation();
+  updateParticleState();
 })();
