@@ -170,38 +170,26 @@ const PORTFOLIO_DATA = {
 
   experience: [
     {
-      year: "2024 - Sekarang",
-      role: "Senior Frontend & Web Developer",
-      company: "Tech Inovasi Digital",
-      description: "Memimpin perancangan frontend untuk produk SaaS enterprise, mengoptimalkan kecepatan muat halaman sebesar 45%, dan mengimplementasikan sistem desain modular."
+      year: "October 2024 - Desember 2024",
+      role: "Frontend Developer Intern",
+      company: "PT Pionir Pemoeda Berdikara(Photomatics Group)",
+      description: "Mengembangkan antarmuka pengguna untuk aplikasi internal perusahaan menggunakan Laravel, serta berkolaborasi dengan tim backend untuk integrasi API."
     },
     {
-      year: "2022 - 2024",
-      role: "Full-Stack Web Developer",
-      company: "Kreatif Studio Nusantara",
-      description: "Membangun 15+ website klien dan aplikasi web dinamis dengan React, Node.js, dan database SQL/NoSQL. Mengintegrasikan berbagai API pembayaran lokal."
+      year: "2025 - Sekarang",
+      role: "IT Support",
+      company: "PT Pionir Pemoeda Berdikara(Photomatics Group)",
+      description: "Bertanggung jawab atas pemeliharaan infrastruktur IT, troubleshooting perangkat keras dan perangkat lunak, serta mendukung tim pengembangan dalam implementasi solusi teknologi."
     },
-    {
-      year: "2021 - 2022",
-      role: "Junior Web Developer & UI Designer",
-      company: "Digital Solusindo",
-      description: "Bertanggung jawab atas slicing desain Figma ke kode HTML/CSS responsif, perbaikan bug UI/UX, dan pemeliharaan website berkala."
-    }
   ],
 
   education: [
     {
-      year: "2019 - 2023",
+      year: "2021 - 2025",
       degree: "Sarjana Komputer (S.Kom) - Teknik Informatika",
-      institution: "Universitas Teknologi Indonesia",
-      description: "Fokus pada Rekayasa Perangkat Lunak, Arsitektur Sistem Web, dan Interaksi Manusia & Komputer. Lulus dengan predikat Sangat Memuaskan (IPK 3.82)."
+      institution: "Universitas Bina Sarana Informatika",
+      description: "Fokus pada Rekayasa Perangkat Lunak, Arsitektur Sistem Web, dan Interaksi Manusia & Komputer. Lulus dengan predikat Sangat Memuaskan"
     },
-    {
-      year: "2023",
-      degree: "Sertifikasi Profesional Full-Stack Developer",
-      institution: "Global Tech Academy",
-      description: "Pelatihan intensif arsitektur cloud, mikroservis, performa web, dan keamanan aplikasi web modern."
-    }
   ],
 
   testimonials: [
