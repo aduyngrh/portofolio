@@ -1,19 +1,21 @@
 /**
  * PARTICLES & AMBIENT CANVAS BACKGROUND
- * Ringan, hemat daya, 60 FPS, bebas crash, mendukung resize dan mouse interaction
+ * Ultra-light mobile build: animation fully pauses during scroll
+ * Desktop: 60 FPS with mouse interaction
  */
 (function() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
-  let animationFrameId;
+  const ctx = canvas.getContext('2d', { alpha: true });
+  let animationFrameId = null;
   let particles = [];
   let width = 0;
   let height = 0;
   let isMobile = false;
   let isScrolling = false;
   let scrollTimeout = null;
+  let isAnimating = false;
 
   const mouse = {
     x: null,
@@ -28,39 +30,54 @@
   function resize() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-    isMobile = width < 768;
+    isMobile = window.innerWidth < 768 || ('ontouchstart' in window);
     initParticles();
   }
 
   function initParticles() {
     particles = [];
-    // Batasi partikel di mobile agar performa scroll tetap 60-120 FPS
-    const count = isMobile ? 15 : Math.min(Math.floor((width * height) / 18000), 55);
+    // Mobile: minimal particles. Desktop: normal density
+    const count = isMobile ? 10 : Math.min(Math.floor((width * height) / 18000), 55);
 
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.6),
-        vy: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.6),
+        vx: (Math.random() - 0.5) * (isMobile ? 0.15 : 0.6),
+        vy: (Math.random() - 0.5) * (isMobile ? 0.15 : 0.6),
         radius: Math.random() * 2 + 1,
         alpha: Math.random() * 0.4 + 0.2
       });
     }
   }
 
-  function draw() {
-    // Di mobile, lewati repaint canvas saat layar sedang aktif di-scroll agar touch scrolling 100% mulus
-    if (isMobile && isScrolling) {
-      animationFrameId = requestAnimationFrame(draw);
-      return;
+  function startAnimation() {
+    if (isAnimating) return;
+    isAnimating = true;
+    animationFrameId = requestAnimationFrame(draw);
+  }
+
+  function stopAnimation() {
+    if (!isAnimating) return;
+    isAnimating = false;
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
     }
+  }
+
+  function draw() {
+    if (!isAnimating) return;
 
     ctx.clearRect(0, 0, width, height);
 
     const dark = isDarkMode();
-    const particleColor = dark ? '99, 102, 241' : '79, 70, 229'; // Indigo tint
-    const lineColor = dark ? '56, 189, 248' : '99, 102, 241';     // Cyan/Indigo tint
+    const particleColor = dark ? '99, 102, 241' : '79, 70, 229';
+    const lineColor = dark ? '56, 189, 248' : '99, 102, 241';
+
+    // On mobile, skip connection lines entirely — they're the heaviest part
+    const drawLines = !isMobile;
+    const maxDist = 110;
 
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
@@ -73,7 +90,7 @@
       if (p.x < 0 || p.x > width) p.vx *= -1;
       if (p.y < 0 || p.y > height) p.vy *= -1;
 
-      // Subtle mouse interaction (desktop only)
+      // Mouse interaction (desktop only)
       if (!isMobile && mouse.x !== null && mouse.y !== null) {
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
@@ -91,22 +108,23 @@
       ctx.fillStyle = `rgba(${particleColor}, ${p.alpha})`;
       ctx.fill();
 
-      // Connect near particles (di mobile hanya connect jarak dekat sekali agar ringan)
-      const maxDist = isMobile ? 65 : 110;
-      for (let j = i + 1; j < particles.length; j++) {
-        const p2 = particles[j];
-        const dx = p.x - p2.x;
-        const dy = p.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+      // Connect near particles (desktop only)
+      if (drawLines) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < maxDist) {
-          const alpha = (1 - dist / maxDist) * (dark ? 0.15 : 0.08);
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(${lineColor}, ${alpha})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
+          if (dist < maxDist) {
+            const alpha = (1 - dist / maxDist) * (dark ? 0.15 : 0.08);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(${lineColor}, ${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
         }
       }
     }
@@ -114,20 +132,26 @@
     animationFrameId = requestAnimationFrame(draw);
   }
 
-  // Event Listeners dengan throttle/debounce
+  // === Scroll: COMPLETELY pause animation on mobile during scroll ===
   window.addEventListener('scroll', () => {
     if (isMobile) {
-      isScrolling = true;
+      if (!isScrolling) {
+        isScrolling = true;
+        stopAnimation(); // Full stop — zero GPU usage during scroll
+      }
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         isScrolling = false;
-      }, 90);
+        startAnimation(); // Resume when scroll stops
+      }, 150); // Wait 150ms of inactivity before resuming
     }
   }, { passive: true });
 
-  // Event Listeners dengan throttle/debounce
+  // Debounced resize
+  let resizeTimeout;
   window.addEventListener('resize', () => {
-    resize();
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resize, 200);
   });
 
   window.addEventListener('mousemove', (e) => {
@@ -140,16 +164,16 @@
     mouse.y = null;
   });
 
-  // Pause animation when tab is not active to save battery/resources
+  // Pause animation when tab is not active to save battery
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-      cancelAnimationFrame(animationFrameId);
-    } else {
-      animationFrameId = requestAnimationFrame(draw);
+      stopAnimation();
+    } else if (!isScrolling) {
+      startAnimation();
     }
   });
 
   // Start
   resize();
-  draw();
+  startAnimation();
 })();

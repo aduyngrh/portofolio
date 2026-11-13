@@ -132,7 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (backToTopBtn) {
     backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const isMobile = window.innerWidth < 768 || ('ontouchstart' in window);
+      window.scrollTo({ top: 0, behavior: isMobile ? 'auto' : 'smooth' });
       if (window.SoundFX) window.SoundFX.click();
     });
   }
@@ -737,7 +738,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      // On mobile, use instant scroll for reliability; on desktop, smooth
+      const isMobile = window.innerWidth < 768 || ('ontouchstart' in window);
+      el.scrollIntoView({ behavior: isMobile ? 'auto' : 'smooth' });
     }
   }
 

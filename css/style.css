@@ -72,12 +72,18 @@
 }
 
 html {
-  scroll-behavior: smooth;
   font-size: 16px;
   overflow-x: hidden;
   max-width: 100%;
   width: 100%;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Smooth scroll only on desktop — on mobile, native touch momentum is faster & smoother */
+@media (min-width: 769px) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -1862,15 +1868,64 @@ textarea.form-control {
     max-width: 100vw !important;
   }
 
+  /* Kill body transition on mobile to prevent full-page repaint */
+  body {
+    transition: none !important;
+  }
+
+  /* Reduce ALL transitions to bare minimum on mobile for scroll performance */
+  .project-card,
+  .skill-category-card,
+  .testimonial-card,
+  .about-card,
+  .timeline-box,
+  .contact-item,
+  .social-link,
+  .highlight-pill,
+  .stat-item,
+  .btn-secondary {
+    transition: none !important;
+  }
+
+  /* Disable hover transforms on mobile — they cause layout recalculation during scroll */
+  .project-card:hover,
+  .skill-category-card:hover,
+  .social-link:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-outline:hover,
+  .icon-btn:hover {
+    transform: none !important;
+  }
+
+  /* Kill ALL box-shadows on cards during mobile — major GPU drain */
+  .about-card,
+  .timeline-box,
+  .playground-card,
+  .contact-form-card,
+  .skill-category-card,
+  .testimonial-card,
+  .project-card,
+  .stats-grid {
+    box-shadow: none !important;
+  }
+
   .container {
     padding: 0 1rem;
     max-width: 100%;
     overflow-x: hidden;
   }
 
-  /* Disable heavy multi-layer blur filters on mobile for buttery smooth 60-120fps scrolling */
+  /* Disable heavy multi-layer blur filters on mobile for buttery smooth scrolling */
   .ambient-glow {
     display: none !important;
+  }
+
+  /* Kill avatar glow animation — very heavy on mobile GPU */
+  .avatar-glow {
+    animation: none !important;
+    filter: blur(30px);
+    opacity: 0.25;
   }
 
   .about-card,
@@ -1897,13 +1952,62 @@ textarea.form-control {
     background: rgba(255, 255, 255, 0.98);
   }
 
-  /* GPU Hardware Acceleration for persistent floating elements */
+  /* Navbar: also kill backdrop-filter on mobile — very heavy */
+  .navbar.floating-pill {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(9, 13, 22, 0.96) !important;
+  }
+
+  .navbar.floating-pill.scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  [data-theme="light"] .navbar.floating-pill {
+    background: rgba(255, 255, 255, 0.97) !important;
+  }
+
+  [data-theme="light"] .navbar.floating-pill.scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* GPU Hardware Acceleration for fixed/sticky elements only */
   #scroll-progress,
   .navbar-wrapper,
-  .navbar.floating-pill,
   .back-to-top {
     transform: translateZ(0);
     will-change: transform;
+  }
+
+  /* Remove will-change from scroll content — it wastes GPU memory and creates compositing overhead */
+  .navbar.floating-pill {
+    will-change: auto;
+  }
+
+  /* Scroll progress bar: remove transition on mobile — fires every scroll frame */
+  #scroll-progress {
+    transition: none !important;
+  }
+
+  /* Kill infinite animations on mobile — they consume GPU compositing budget during scroll */
+  .status-dot {
+    animation: none !important;
+    box-shadow: none !important;
+  }
+
+  .typed-cursor {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  /* Kill the skill-bar-fill animation on mobile — triggers layout during scroll reveal */
+  .skill-bar-fill {
+    transition-duration: 0.4s !important;
+  }
+
+  /* Reduce project thumbnail hover animation */
+  .project-thumbnail img {
+    transition: none !important;
   }
 
   /* Floating Pill Navbar on Mobile */
