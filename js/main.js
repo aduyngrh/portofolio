@@ -171,10 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const typedTarget = document.getElementById('typed-text');
   if (typedTarget) {
     const roles = [
-      "Full-Stack Web Developer",
-      "UI/UX Designer",
-      "Problem Solver & Engineer",
-      "Clean Code Enthusiast"
+      "Modern Web Applications",
+      "High-Performance Frontend Systems",
+      "Robust REST & GraphQL APIs",
+      "Scalable Architecture & Clean Code"
     ];
     let roleIdx = 0;
     let charIdx = 0;
@@ -243,17 +243,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderSkillCategory(container, skillsList) {
     if (!container || !Array.isArray(skillsList)) return;
-    container.innerHTML = skillsList.map(skill => `
-      <div class="skill-item">
-        <div class="skill-info">
-          <span>${skill.name}</span>
-          <span class="skill-pct">${skill.level}%</span>
-        </div>
-        <div class="skill-bar-track">
-          <div class="skill-bar-fill" data-level="${skill.level}"></div>
-        </div>
+    container.innerHTML = `
+      <div class="skills-spec-list">
+        ${skillsList.map(skill => `
+          <div class="skill-spec-item">
+            <div class="skill-spec-left">
+              <span class="skill-spec-dot"></span>
+              <span class="skill-spec-name">${skill.name}</span>
+            </div>
+            <div class="skill-spec-right">
+              <div class="skill-meter-track">
+                <div class="skill-meter-fill" data-level="${skill.level}"></div>
+              </div>
+              <span class="skill-spec-pct">${skill.level}%</span>
+            </div>
+          </div>
+        `).join('')}
       </div>
-    `).join('');
+    `;
   }
 
   if (data.skills) {
@@ -263,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function triggerSkillBars() {
-    const bars = document.querySelectorAll('.skill-bar-fill');
+    const bars = document.querySelectorAll('.skill-meter-fill');
     bars.forEach(bar => {
       const level = bar.getAttribute('data-level');
       if (level) {
@@ -285,33 +292,46 @@ document.addEventListener('DOMContentLoaded', () => {
       ? data.projects 
       : data.projects.filter(p => p.category === filter);
 
-    projectsGrid.innerHTML = filtered.map(proj => `
-      <div class="project-card reveal-on-scroll tilt-card" data-id="${proj.id}">
-        <div class="project-thumbnail" onclick="openProjectModal('${proj.id}')">
+    projectsGrid.innerHTML = filtered.map((proj, idx) => `
+      <article class="project-card reveal-on-scroll" data-id="${proj.id}">
+        <div class="project-header">
+          <div class="project-index">MODULE_${String(idx + 1).padStart(2, '0')}</div>
           <span class="project-category-badge">${proj.categoryLabel}</span>
+        </div>
+
+        <div class="project-thumbnail" onclick="openProjectModal('${proj.id}')">
           <img src="${proj.image}" alt="${proj.title}" loading="lazy" />
           <div class="project-overlay">
-            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openProjectModal('${proj.id}')">
-              Lihat Detail 🔍
-            </button>
+            <span class="project-inspect-btn">
+              <span>Inspect Architecture</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9.2-9.2M17 17V8H8"/></svg>
+            </span>
           </div>
         </div>
+
         <div class="project-content">
-          <h4 class="project-title">${proj.title}</h4>
+          <div class="project-meta-line">
+            <span class="project-status-dot"></span>
+            <span class="project-highlight-text">${proj.highlights || 'Verified Production Build'}</span>
+          </div>
+          <h4 class="project-title" onclick="openProjectModal('${proj.id}')">${proj.title}</h4>
           <p class="project-desc">${proj.description}</p>
+          
           <div class="project-tags">
             ${proj.techStack.map(t => `<span class="tech-tag">${t}</span>`).join('')}
           </div>
+
           <div class="project-actions">
             <button class="btn btn-secondary btn-sm" onclick="openProjectModal('${proj.id}')">
-              Detail Lengkap
+              <span>System Specs</span>
             </button>
             <a href="${proj.demoUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-              Live Demo ↗
+              <span>Live Deployment</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17l9.2-9.2M17 17V8H8"/></svg>
             </a>
           </div>
         </div>
-      </div>
+      </article>
     `).join('');
 
     // Trigger reveal classes
@@ -498,9 +518,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   const testimonialsGrid = document.getElementById('testimonials-grid');
   if (testimonialsGrid && data.testimonials) {
-    testimonialsGrid.innerHTML = data.testimonials.map(item => `
+    testimonialsGrid.innerHTML = data.testimonials.map((item, idx) => `
       <div class="testimonial-card reveal-on-scroll">
-        <p class="testimonial-quote">${item.text}</p>
+        <div class="testimonial-card-top">
+          <span class="testimonial-idx">LOG_REF // 0${idx + 1}</span>
+          <span class="testimonial-verified">VERIFIED PEER</span>
+        </div>
+        <p class="testimonial-quote">"${item.text}"</p>
         <div class="testimonial-author">
           <img src="${item.avatar}" alt="${item.name}" class="author-avatar" />
           <div>
@@ -701,16 +725,16 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 'theme', group: 'Aksi Cepat', title: 'Ganti Tema (Gelap / Terang)', desc: 'Alihkan mode tampilan layar', icon: '🌓', badge: 'Aksi', action: () => { if (themeToggleBtn) themeToggleBtn.click(); } },
       { id: 'sound', group: 'Aksi Cepat', title: 'Toggle Efek Suara', desc: 'Aktifkan atau senyapkan efek audio synthesizer', icon: '🔊', badge: 'Aksi', action: () => { if (soundToggleBtn) soundToggleBtn.click(); } },
       { id: 'copy-email', group: 'Aksi Cepat', title: 'Salin Alamat Email', desc: data.profile ? data.profile.email : 'yudhanugraha081@gmail.com', icon: '📋', badge: 'Aksi', action: () => { if (copyEmailBtn) copyEmailBtn.click(); } },
-      { id: 'whatsapp', group: 'Aksi Cepat', title: 'Chat Cepat via WhatsApp', desc: 'Kirim pesan langsung ke WhatsApp Yudha', icon: '💬', badge: 'Tautan', action: () => { const num = data.profile && data.profile.whatsapp ? data.profile.whatsapp.replace(/[^0-9]/g, '') : '6281234567890'; window.open(`https://wa.me/${num}?text=Halo%20Yudha,%20saya%20tertarik%20bekerja%20sama%20dengan%20Anda.`, '_blank'); } },
+      { id: 'whatsapp', group: 'Aksi Cepat', title: 'Chat Cepat via WhatsApp', desc: 'Kirim pesan langsung ke WhatsApp Yudha', icon: '💬', badge: 'Tautan', action: () => { const num = data.profile && data.profile.whatsapp ? data.profile.whatsapp.replace(/[^0-9]/g, '') : '6281381639571'; window.open(`https://wa.me/${num}?text=Halo%20Yudha,%20saya%20tertarik%20bekerja%20sama%20dengan%20Anda.`, '_blank'); } },
       { id: 'github', group: 'Aksi Cepat', title: 'Buka Profil GitHub', desc: data.profile && data.profile.github ? data.profile.github : 'https://github.com/aduyngrh', icon: '🐙', badge: 'Tautan', action: () => { window.open(data.profile && data.profile.github ? data.profile.github : 'https://github.com/aduyngrh', '_blank'); } },
-      { id: 'linkedin', group: 'Aksi Cepat', title: 'Buka Profil LinkedIn', desc: data.profile && data.profile.linkedin ? data.profile.linkedin : 'https://linkedin.com/in/yudhanugraha', icon: '💼', badge: 'Tautan', action: () => { window.open(data.profile && data.profile.linkedin ? data.profile.linkedin : 'https://linkedin.com/in/yudhanugraha', '_blank'); } },
+      { id: 'linkedin', group: 'Aksi Cepat', title: 'Buka Profil LinkedIn', desc: data.profile && data.profile.linkedin ? data.profile.linkedin : 'https://linkedin.com/in/YudhaNugraha-', icon: '💼', badge: 'Tautan', action: () => { window.open(data.profile && data.profile.linkedin ? data.profile.linkedin : 'https://linkedin.com/in/YudhaNugraha-', '_blank'); } },
 
       // Navigation
       { id: 'nav-beranda', group: 'Navigasi Cepat', title: 'Beranda', desc: 'Kembali ke bagian teratas', icon: '🏠', badge: 'Navigasi', action: () => scrollToSection('beranda') },
       { id: 'nav-tentang', group: 'Navigasi Cepat', title: 'Tentang Saya', desc: 'Perjalanan, filosofi kerja & riwayat karier', icon: '👤', badge: 'Navigasi', action: () => scrollToSection('tentang') },
       { id: 'nav-keahlian', group: 'Navigasi Cepat', title: 'Keahlian Teknis', desc: 'Tech stack frontend, backend & tools', icon: '🛠️', badge: 'Navigasi', action: () => scrollToSection('keahlian') },
       { id: 'nav-proyek', group: 'Navigasi Cepat', title: 'Portofolio Karya', desc: 'Daftar aplikasi & proyek unggulan', icon: '📂', badge: 'Navigasi', action: () => scrollToSection('proyek') },
-      { id: 'nav-playground', group: 'Navigasi Cepat', title: 'Interactive Playground', desc: 'Live Glassmorphism Card Styler demo', icon: '💎', badge: 'Demo', action: () => scrollToSection('playground') },
+      { id: 'nav-playground', group: 'Navigasi Cepat', title: 'Interactive Lab', desc: 'Design tokens & surface visualizer', icon: '💎', badge: 'Demo', action: () => scrollToSection('playground') },
       { id: 'nav-kontak', group: 'Navigasi Cepat', title: 'Hubungi Saya', desc: 'Kirim formulir pesan & info kontak', icon: '✉️', badge: 'Navigasi', action: () => scrollToSection('kontak') }
     ];
 

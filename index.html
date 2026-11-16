@@ -22,10 +22,10 @@
   <meta name="twitter:description" content="Portofolio Yudha Nugraha sebagai Full-Stack Developer dan UI/UX Designer.">
   <meta name="twitter:image" content="https://yudhanugraha.github.io/portofolio/assets/images/projects/project-1.svg">
 
-  <!-- Google Fonts: Outfit & JetBrains Mono with Fallback -->
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
@@ -70,8 +70,7 @@
 
   <!-- Ambient Background & Canvas -->
   <canvas id="bg-canvas"></canvas>
-  <div class="ambient-glow ambient-glow-1"></div>
-  <div class="ambient-glow ambient-glow-2"></div>
+  <div class="bg-grid-pattern"></div>
 
   <!-- ==========================================================================
        NAVBAR (FLOATING PILL DESIGN)
@@ -141,73 +140,97 @@
     <div class="container hero-grid">
       <!-- Left Hero Text -->
       <div class="hero-intro reveal-on-scroll">
+        <div class="hero-status">
+          <span class="status-dot"></span>
+          <span>Available for New Projects &amp; Roles</span>
+          <span class="status-location">Based in Indonesia (GMT+7)</span>
+        </div>
+
         <h1 class="hero-title">
-          Halo, saya <span class="text-gradient">Yudha</span> 👋
+          Crafting <span class="text-highlight">robust software</span> with precision &amp; taste.
         </h1>
 
-        <div class="hero-typed-wrapper">
-          <span>Fokus pada </span>
-          <span id="typed-text" class="text-gradient"></span>
+        <div class="hero-subline">
+          <span class="hero-role-label">Specializing in</span>
+          <span id="typed-text" class="typed-text-styled"></span>
           <span class="typed-cursor"></span>
         </div>
 
         <p class="hero-bio">
-          Saya mengembangkan solusi perangkat lunak berbasis web berskala tinggi dengan arsitektur bersih, performa kilat, dan antarmuka pengguna yang memukau. Siap mengubah ide brilian Anda menjadi realitas digital.
+          Saya <strong>Yudha Nugraha</strong>, seorang software engineer yang fokus pada performa web kilat, arsitektur data bersih, dan antarmuka yang intuitif. Membangun sistem yang tidak hanya bekerja andal di balik layar, tetapi juga terasa menyenangkan bagi pengguna.
         </p>
 
         <div class="hero-actions">
           <a href="#proyek" class="btn btn-primary">
-            <span>Lihat Karya Saya</span>
-            <span>🚀</span>
+            <span>Explore Works</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17l9.2-9.2M17 17V8H8"/></svg>
           </a>
           <a href="#kontak" class="btn btn-secondary">
-            <span>Hubungi Saya</span>
-            <span>💬</span>
+            <span>Get in Touch</span>
           </a>
           <button class="btn btn-outline" id="btn-download-cv">
-            <span>Resume / CV</span>
-            <span>📄</span>
+            <span>Resume (CV)</span>
           </button>
         </div>
 
         <div class="hero-socials">
           <a href="https://github.com/aduyngrh" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub" aria-label="GitHub">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span class="social-text">github</span>
           </a>
           <a href="https://linkedin.com/in/YudhaNugraha-" target="_blank" rel="noopener noreferrer" class="social-link" title="LinkedIn" aria-label="LinkedIn">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span class="social-text">linkedin</span>
           </a>
           <a href="https://instagram.com/aduyngrh" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram" aria-label="Instagram">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </a>
-          <a href="https://wa.me/6281381639571" target="_blank" rel="noopener noreferrer" class="social-link" title="WhatsApp" aria-label="WhatsApp">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <span class="social-text">instagram</span>
           </a>
         </div>
       </div>
 
-      <!-- Right Visual Showcase -->
+      <!-- Right Visual Showcase: Architectural Spec Sheet Card -->
       <div class="hero-visual reveal-on-scroll delay-200">
-        <div class="avatar-wrapper">
-          <div class="avatar-glow"></div>
-          <div class="avatar-img-container">
-            <img src="assets/images/avatar-placeholder.svg" alt="Yudha Profil" class="avatar-img" />
-          </div>
-
-          <!-- Floating Badges -->
-          <div class="floating-badge floating-badge-1">
-            <span style="font-size: 1.2rem;">⚡</span>
-            <div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Tech Stack</div>
-              <div>React &amp; Next.js</div>
+        <div class="terminal-card">
+          <div class="terminal-card-header">
+            <div class="terminal-dots">
+              <span class="terminal-dot red"></span>
+              <span class="terminal-dot yellow"></span>
+              <span class="terminal-dot green"></span>
             </div>
+            <div class="terminal-title">yudha@workstation: ~/manifest.json</div>
+            <span class="terminal-badge">LIVE STATUS</span>
           </div>
-
-          <div class="floating-badge floating-badge-2">
-            <span style="font-size: 1.2rem;">🎯</span>
-            <div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Standar Kode</div>
-              <div>Clean &amp; Tested</div>
+          <div class="terminal-card-body">
+            <div class="terminal-code-block">
+              <span class="t-comment">// Core Profile &amp; Architecture</span><br>
+              <span class="t-key">"engineer"</span>: <span class="t-str">"Yudha Nugraha"</span>,<br>
+              <span class="t-key">"role"</span>: <span class="t-str">"Full-Stack Software Engineer"</span>,<br>
+              <span class="t-key">"current_focus"</span>: [<br>
+              &nbsp;&nbsp;<span class="t-str">"React 19 &amp; Next.js App Router"</span>,<br>
+              &nbsp;&nbsp;<span class="t-str">"High-throughput Node.js Services"</span>,<br>
+              &nbsp;&nbsp;<span class="t-str">"PostgreSQL &amp; Distributed Systems"</span><br>
+              ],<br>
+              <span class="t-key">"philosophy"</span>: <span class="t-str">"Ship fast, keep it maintainable, zero bloat."</span>,<br>
+              <span class="t-key">"metrics"</span>: {<br>
+              &nbsp;&nbsp;<span class="t-key">"lighthouse_avg"</span>: <span class="t-num">98</span>,<br>
+              &nbsp;&nbsp;<span class="t-key">"accessibility"</span>: <span class="t-str">"AAA standard"</span>,<br>
+              &nbsp;&nbsp;<span class="t-key">"uptime_focus"</span>: <span class="t-num">99.9</span><br>
+              }
+            </div>
+            <div class="terminal-card-footer">
+              <div class="terminal-meta-item">
+                <span class="t-meta-label">ENV</span>
+                <span class="t-meta-val">Production</span>
+              </div>
+              <div class="terminal-meta-item">
+                <span class="t-meta-label">PING</span>
+                <span class="t-meta-val">12ms</span>
+              </div>
+              <div class="terminal-meta-item">
+                <span class="t-meta-label">BUILD</span>
+                <span class="t-meta-val">Verified ✓</span>
+              </div>
             </div>
           </div>
         </div>
@@ -222,20 +245,40 @@
     <div class="container">
       <div class="stats-grid reveal-on-scroll">
         <div class="stat-item">
-          <div class="stat-number" data-target="24" data-suffix="+">0</div>
-          <div class="stat-label">Proyek Selesai</div>
+          <div class="stat-number-wrap">
+            <span class="stat-number" data-target="24" data-suffix="+">0</span>
+          </div>
+          <div class="stat-meta">
+            <span class="stat-label">Shipped Projects</span>
+            <span class="stat-desc">Production web applications &amp; systems</span>
+          </div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" data-target="3" data-suffix="+">0</div>
-          <div class="stat-label">Tahun Pengalaman</div>
+          <div class="stat-number-wrap">
+            <span class="stat-number" data-target="3" data-suffix="+">0</span>
+          </div>
+          <div class="stat-meta">
+            <span class="stat-label">Years of Experience</span>
+            <span class="stat-desc">Hands-on full-stack development</span>
+          </div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" data-target="18" data-suffix="+">0</div>
-          <div class="stat-label">Klien &amp; Partner</div>
+          <div class="stat-number-wrap">
+            <span class="stat-number" data-target="18" data-suffix="+">0</span>
+          </div>
+          <div class="stat-meta">
+            <span class="stat-label">Clients &amp; Partners</span>
+            <span class="stat-desc">Startups, agencies &amp; businesses</span>
+          </div>
         </div>
         <div class="stat-item">
-          <div class="stat-number" data-target="99" data-suffix="%">0</div>
-          <div class="stat-label">Tingkat Kepuasan</div>
+          <div class="stat-number-wrap">
+            <span class="stat-number" data-target="99" data-suffix="%">0</span>
+          </div>
+          <div class="stat-meta">
+            <span class="stat-label">Satisfaction Rate</span>
+            <span class="stat-desc">Committed to quality and speed</span>
+          </div>
         </div>
       </div>
     </div>
@@ -247,38 +290,39 @@
   <section class="about-section" id="tentang">
     <div class="container">
       <div class="section-header reveal-on-scroll">
-        <span class="section-tag">Tentang Saya</span>
-        <h2 class="section-title">Dedikasi &amp; Passion di Dunia Rekayasa Web</h2>
-        <p class="section-subtitle">Mengkombinasikan kecermatan teknis arsitektur perangkat lunak dengan keindahan antarmuka pengguna.</p>
+        <span class="section-tag">[01 / BACKGROUND &amp; PHILOSOPHY]</span>
+        <h2 class="section-title">Rekayasa perangkat lunak dengan standar ketat.</h2>
+        <p class="section-subtitle">Fokus pada arsitektur scalable, pemecahan masalah nyata, dan kode yang mudah dimaintain dalam jangka panjang.</p>
       </div>
 
       <div class="about-grid">
         <!-- Story Card -->
         <div class="about-card reveal-on-scroll">
-          <h3>Perjalanan &amp; Filosofi Kerja</h3>
+          <div class="about-card-badge">ENG_MANIFEST</div>
+          <h3>Perjalanan &amp; Prinsip Teknis</h3>
           <p>
-            Saya selalu percaya bahwa sebuah produk digital yang hebat tidak hanya harus berjalan tanpa kesalahan, namun juga memberikan kepuasan emosional bagi penggunanya melalui kecepatan muat yang instan dan interaksi yang halus.
+            Bagi saya, web development bukan sekadar menaruh template atau styling visual. Ini adalah kombinasi disiplin antara efisiensi algoritma, arsitektur database yang tepat, optimasi aset, serta ergonomi UX.
           </p>
           <p>
-            Dengan latar belakang ilmu komputer dan pengalaman menangani proyek dari skala startup hingga kebutuhan enterprise, saya terbiasa mengawal siklus pengembangan dari perancangan arsitektur, prototyping desain, implementasi frontend modern, hingga optimasi server backend.
+            Berlatar belakang pendidikan Teknik Informatika dan pengalaman membangun ragam aplikasi dari nol, saya terbiasa memecahkan bottleneck performa, mengamankan endpoint API, dan mengemas desain kompleks menjadi komponen yang modular dan reusable.
           </p>
 
-          <div class="about-highlights">
-            <div class="highlight-pill">
-              <span>🚀</span>
-              <span>Performa Teruji &amp; Cepat</span>
+          <div class="about-specs-grid">
+            <div class="spec-cell">
+              <span class="spec-label">ARCHITECTURE</span>
+              <span class="spec-value">Modular &amp; Component-Driven</span>
             </div>
-            <div class="highlight-pill">
-              <span>💎</span>
-              <span>Pixel-Perfect Design</span>
+            <div class="spec-cell">
+              <span class="spec-label">CODE STYLE</span>
+              <span class="spec-value">Strict TypeScript &amp; Tested</span>
             </div>
-            <div class="highlight-pill">
-              <span>🔒</span>
-              <span>Keamanan &amp; Standar Industri</span>
+            <div class="spec-cell">
+              <span class="spec-label">PERFORMANCE</span>
+              <span class="spec-value">Sub-second First Paint Target</span>
             </div>
-            <div class="highlight-pill">
-              <span>📱</span>
-              <span>Responsif di Semua Layar</span>
+            <div class="spec-cell">
+              <span class="spec-label">RESPONSIVENESS</span>
+              <span class="spec-value">Fluid &amp; Touch Optimized</span>
             </div>
           </div>
         </div>
@@ -286,8 +330,12 @@
         <!-- Experience & Education Tabs -->
         <div class="timeline-box reveal-on-scroll delay-200">
           <div class="timeline-tabs">
-            <button class="timeline-tab-btn active" id="tab-experience-btn">Pengalaman Kerja</button>
-            <button class="timeline-tab-btn" id="tab-education-btn">Pendidikan &amp; Sertifikasi</button>
+            <button class="timeline-tab-btn active" id="tab-experience-btn">
+              <span class="tab-indicator">●</span> Pengalaman Kerja
+            </button>
+            <button class="timeline-tab-btn" id="tab-education-btn">
+              <span class="tab-indicator">○</span> Pendidikan &amp; Lisensi
+            </button>
           </div>
 
           <div class="timeline-list" id="timeline-content">
@@ -304,18 +352,18 @@
   <section class="skills-section" id="keahlian">
     <div class="container">
       <div class="section-header reveal-on-scroll">
-        <span class="section-tag">Keahlian Teknis</span>
-        <h2 class="section-title">Tech Stack &amp; Tools yang Dikuasai</h2>
-        <p class="section-subtitle">Daftar teknologi modern yang saya gunakan sehari-hari untuk mewujudkan ide menjadi perangkat lunak berkualitas tinggi.</p>
+        <span class="section-tag">[02 / TECH STACK &amp; CAPABILITIES]</span>
+        <h2 class="section-title">Tools, frameworks, and engineering arsenal.</h2>
+        <p class="section-subtitle">Teknologi yang saya gunakan secara intensif untuk menyelesaikan kebutuhan bisnis dan engineering sehari-hari.</p>
       </div>
 
       <div class="skills-categories">
         <!-- Frontend -->
         <div class="skill-category-card reveal-on-scroll">
-          <h3 class="category-title">
-            <span>🎨</span>
-            <span>Frontend Development</span>
-          </h3>
+          <div class="category-header">
+            <span class="cat-num">01</span>
+            <h3 class="category-title">Client-Side &amp; Interface</h3>
+          </div>
           <div id="frontend-skills-list">
             <!-- Populated via js/main.js -->
           </div>
@@ -323,10 +371,10 @@
 
         <!-- Backend & DB -->
         <div class="skill-category-card reveal-on-scroll delay-100">
-          <h3 class="category-title">
-            <span>⚙️</span>
-            <span>Backend &amp; Database</span>
-          </h3>
+          <div class="category-header">
+            <span class="cat-num">02</span>
+            <h3 class="category-title">Server, API &amp; Databases</h3>
+          </div>
           <div id="backend-skills-list">
             <!-- Populated via js/main.js -->
           </div>
@@ -334,10 +382,10 @@
 
         <!-- Tools & DevOps -->
         <div class="skill-category-card reveal-on-scroll delay-200">
-          <h3 class="category-title">
-            <span>🛠️</span>
-            <span>Tools &amp; DevOps</span>
-          </h3>
+          <div class="category-header">
+            <span class="cat-num">03</span>
+            <h3 class="category-title">Infra, Cloud &amp; Tooling</h3>
+          </div>
           <div id="tools-skills-list">
             <!-- Populated via js/main.js -->
           </div>
@@ -352,14 +400,14 @@
   <section class="projects-section" id="proyek">
     <div class="container">
       <div class="section-header reveal-on-scroll">
-        <span class="section-tag">Portofolio Karya</span>
-        <h2 class="section-title">Proyek Unggulan Terpilih</h2>
-        <p class="section-subtitle">Setiap proyek dirancang untuk menyelesaikan tantangan spesifik dengan arsitektur tangguh dan visual memikat.</p>
+        <span class="section-tag">[03 / SELECTED WORKS]</span>
+        <h2 class="section-title">Featured systems &amp; production projects.</h2>
+        <p class="section-subtitle">Setiap karya dikembangkan untuk menyelesaikan tantangan spesifik dengan metrik terukur dan arsitektur kokoh.</p>
       </div>
 
       <!-- Filter Buttons -->
       <div class="project-filters reveal-on-scroll">
-        <button class="filter-btn active" data-filter="all">Semua Proyek</button>
+        <button class="filter-btn active" data-filter="all">All Modules</button>
         <button class="filter-btn" data-filter="web">Web Application</button>
         <button class="filter-btn" data-filter="fullstack">AI &amp; Full-Stack</button>
         <button class="filter-btn" data-filter="mobile">Fintech &amp; Mobile</button>
@@ -379,9 +427,9 @@
   <section class="playground-section" id="playground">
     <div class="container">
       <div class="section-header reveal-on-scroll">
-        <span class="section-tag">Interactive Demo</span>
-        <h2 class="section-title">Live Glassmorphism Card Styler</h2>
-        <p class="section-subtitle">Buktikan kontrol interaktif langsung: atur radius, blur, dan efek cahaya kartu berikut secara real-time!</p>
+        <span class="section-tag">[04 / INTERACTIVE LAB]</span>
+        <h2 class="section-title">Design tokens &amp; surface visualizer.</h2>
+        <p class="section-subtitle">Eksplorasi kalkulasi dynamic CSS token secara real-time: modifikasi border radius, ambient blur, dan depth intensity.</p>
       </div>
 
       <div class="playground-card reveal-on-scroll">
@@ -390,45 +438,44 @@
           <div class="playground-controls">
             <div class="control-group">
               <div class="control-label">
-                <span>Border Radius</span>
-                <span id="val-radius" class="text-gradient">16px</span>
+                <span>BORDER_RADIUS</span>
+                <span id="val-radius" class="text-highlight">16px</span>
               </div>
               <input type="range" min="4" max="40" value="16" id="slider-radius" class="control-slider">
             </div>
 
             <div class="control-group">
               <div class="control-label">
-                <span>Backdrop Blur</span>
-                <span id="val-blur" class="text-gradient">12px</span>
+                <span>BACKDROP_BLUR</span>
+                <span id="val-blur" class="text-highlight">12px</span>
               </div>
               <input type="range" min="0" max="30" value="12" id="slider-blur" class="control-slider">
             </div>
 
             <div class="control-group">
               <div class="control-label">
-                <span>Glow Intensity</span>
-                <span id="val-glow" class="text-gradient">20px</span>
+                <span>ELEVATION_GLOW</span>
+                <span id="val-glow" class="text-highlight">20px</span>
               </div>
               <input type="range" min="0" max="60" value="20" id="slider-glow" class="control-slider">
             </div>
 
             <div style="margin-top: 1rem;">
               <button class="btn btn-secondary btn-sm" id="copy-css-btn">
-                <span>Salin Kode CSS</span>
-                <span>📋</span>
+                <span>Salin Kode CSS Token</span>
               </button>
             </div>
           </div>
 
           <!-- Live Preview -->
           <div class="playground-preview-box">
-            <div class="demo-interactive-card" id="demo-target-card" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
-              <div style="font-size: 2rem; margin-bottom: 0.5rem;">💎</div>
-              <h4 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem;">Glassmorphism Card</h4>
-              <p style="font-size: 0.85rem; color: var(--text-secondary); max-width: 240px; margin: 0 auto 0.8rem;">
-                Efek visual modern dengan blur &amp; glowing neon.
+            <div class="demo-interactive-card" id="demo-target-card">
+              <div class="demo-card-badge">LIVE_PREVIEW</div>
+              <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.3rem;">Engineered Surface</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); max-width: 260px; margin: 0 auto 1rem; line-height: 1.5;">
+                Prinsip desain modular dengan kalkulasi token dinamis.
               </p>
-              <pre id="playground-code" style="font-family: var(--font-mono); font-size: 0.75rem; text-align: left; background: rgba(0,0,0,0.4); padding: 0.6rem; border-radius: 6px; color: #38bdf8;"></pre>
+              <pre id="playground-code" style="font-family: var(--font-mono); font-size: 0.72rem; text-align: left; background: var(--bg-primary); padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid var(--border-color); color: var(--text-primary);"></pre>
             </div>
           </div>
         </div>
@@ -442,9 +489,9 @@
   <section class="testimonials-section" id="rekomendasi">
     <div class="container">
       <div class="section-header reveal-on-scroll">
-        <span class="section-tag">Testimoni &amp; Rekomendasi</span>
-        <h2 class="section-title">Apa Kata Klien &amp; Kolaborator</h2>
-        <p class="section-subtitle">Pengalaman nyata dari rekan tim, founder, dan klien yang pernah bekerja sama dengan saya.</p>
+        <span class="section-tag">[05 / ENDORSEMENTS]</span>
+        <h2 class="section-title">Apa kata para kolaborator &amp; klien.</h2>
+        <p class="section-subtitle">Feedback langsung dari founder, engineering lead, dan partner proyek yang pernah berkolaborasi.</p>
       </div>
 
       <div class="testimonials-grid" id="testimonials-grid">
@@ -459,44 +506,52 @@
   <section class="contact-section" id="kontak">
     <div class="container">
       <div class="section-header reveal-on-scroll">
-        <span class="section-tag">Hubungi Saya</span>
-        <h2 class="section-title">Mari Wujudkan Proyek Hebat Bersama</h2>
-        <p class="section-subtitle">Punya proyek menarik, tawaran kerja, atau ingin berdiskusi santai seputar teknologi? Pintu saya selalu terbuka.</p>
+        <span class="section-tag">[06 / INITIATE CONTACT]</span>
+        <h2 class="section-title">Let's build something remarkable.</h2>
+        <p class="section-subtitle">Membuka kesempatan untuk diskusi proyek baru, full-time engineering role, atau konsultasi arsitektur web.</p>
       </div>
 
       <div class="contact-grid">
         <!-- Direct Contact Info -->
         <div class="contact-info-list reveal-on-scroll">
           <div class="contact-item">
-            <div class="contact-icon-box">📧</div>
+            <div class="contact-icon-box">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
             <div>
-              <div class="contact-label">Email Langsung</div>
-              <a href="yudhanugraha081@gmail.com" class="contact-val">yudhanugraha081@gmail.com</a>
+              <div class="contact-label">DIRECT EMAIL</div>
+              <a href="mailto:yudhanugraha081@gmail.com" class="contact-val">yudhanugraha081@gmail.com</a>
             </div>
             <button class="copy-btn" id="copy-email-btn" title="Salin Email">Salin</button>
           </div>
 
           <div class="contact-item">
-            <div class="contact-icon-box">💬</div>
+            <div class="contact-icon-box">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </div>
             <div>
-              <div class="contact-label">WhatsApp Cepat</div>
+              <div class="contact-label">WHATSAPP CHAT</div>
               <a href="https://wa.me/6281381639571?text=Halo%20Yudha,%20saya%20tertarik%20bekerja%20sama%20dengan%20Anda." target="_blank" rel="noopener noreferrer" class="contact-val">+62 813-8163-9571</a>
             </div>
           </div>
 
           <div class="contact-item">
-            <div class="contact-icon-box">📍</div>
+            <div class="contact-icon-box">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
             <div>
-              <div class="contact-label">Domisili</div>
-              <div class="contact-val">Indonesia(Bekasi)</div>
+              <div class="contact-label">LOCATION</div>
+              <div class="contact-val">Indonesia (Bekasi / Jakarta Remote)</div>
             </div>
           </div>
 
           <div class="contact-item">
-            <div class="contact-icon-box">⏰</div>
+            <div class="contact-icon-box">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
             <div>
-              <div class="contact-label">Waktu Respons</div>
-              <div class="contact-val">Rata-rata &lt; 2 Jam di Hari Kerja</div>
+              <div class="contact-label">RESPONSE LATENCY</div>
+              <div class="contact-val">&lt; 2 Hours on Business Days</div>
             </div>
           </div>
         </div>
@@ -505,28 +560,28 @@
         <div class="contact-form-card reveal-on-scroll delay-200">
           <form id="contact-form">
             <div class="form-group">
-              <label for="contact-name" class="form-label">Nama Anda</label>
-              <input type="text" id="contact-name" class="form-control" placeholder="Contoh: Rian Pratama" required>
+              <label for="contact-name" class="form-label">YOUR NAME</label>
+              <input type="text" id="contact-name" class="form-control" placeholder="Rian Pratama / Tech Lead" required>
             </div>
 
             <div class="form-group">
-              <label for="contact-email" class="form-label">Alamat Email</label>
-              <input type="email" id="contact-email" class="form-control" placeholder="nama@perusahaan.com" required>
+              <label for="contact-email" class="form-label">WORK EMAIL</label>
+              <input type="email" id="contact-email" class="form-control" placeholder="rian@company.com" required>
             </div>
 
             <div class="form-group">
-              <label for="contact-subject" class="form-label">Subjek Diskusi</label>
-              <input type="text" id="contact-subject" class="form-control" placeholder="Pengembangan Web / Tawaran Proyek" required>
+              <label for="contact-subject" class="form-label">TOPIC / PROJECT SCOPE</label>
+              <input type="text" id="contact-subject" class="form-control" placeholder="Web Platform Architecture / Contract / Full-time" required>
             </div>
 
             <div class="form-group">
-              <label for="contact-message" class="form-label">Pesan / Detail Kebutuhan</label>
-              <textarea id="contact-message" class="form-control" placeholder="Ceritakan ide atau kebutuhan Anda di sini..." required></textarea>
+              <label for="contact-message" class="form-label">PROJECT SPECIFICATION</label>
+              <textarea id="contact-message" class="form-control" placeholder="Ringkasan kebutuhan, timeline perkiraan, atau ruang lingkup pekerjaan..." required></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.95rem;">
-              <span>Kirim Pesan Sekarang</span>
-              <span>✈️</span>
+              <span>Send Message</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </button>
           </form>
         </div>
@@ -541,17 +596,22 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
-          <h4>Yudha Nugraha <span class="text-gradient">Portfolio</span></h4>
+          <h4>Yudha Nugraha <span class="footer-sep">/</span> <span class="footer-sub">Software Engineer</span></h4>
           <p>Membangun antarmuka modern &amp; arsitektur web tangguh untuk masa depan.</p>
         </div>
-        <div style="display: flex; gap: 1rem;">
+        <div class="footer-nav-links">
+          <a href="#beranda" class="footer-link">Beranda</a>
+          <a href="#tentang" class="footer-link">Tentang</a>
+          <a href="#keahlian" class="footer-link">Keahlian</a>
+          <a href="#proyek" class="footer-link">Proyek</a>
+          <a href="#kontak" class="footer-link">Kontak</a>
           <a href="#beranda" class="btn btn-secondary btn-sm">Ke Atas ↑</a>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <div>© 2026 Yudha Nugraha. Seluruh Hak Cipta Dilindungi.</div>
-        <div>Dibuat dengan ❤️ &amp; Clean Code di Indonesia</div>
+        <div class="footer-copyright">© 2026 Yudha Nugraha • Built with precision &amp; vanilla standards.</div>
+        <div class="footer-badge-sys">STATUS: ALL_SYSTEMS_OPERATIONAL</div>
       </div>
     </div>
   </footer>
