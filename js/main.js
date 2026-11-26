@@ -171,10 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const typedTarget = document.getElementById('typed-text');
   if (typedTarget) {
     const roles = [
-      "Modern Web Applications",
-      "High-Performance Frontend Systems",
-      "Robust REST & GraphQL APIs",
-      "Scalable Architecture & Clean Code"
+      "Pengembangan Web Full-Stack",
+      "Antarmuka & Sistem Desain",
+      "Arsitektur API & Basis Data",
+      "Performa & Pengalaman Pengguna"
     ];
     let roleIdx = 0;
     let charIdx = 0;
@@ -235,48 +235,82 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 7. RENDER SKILLS & PROGRESS BARS
+  // 7. RENDER TECH LOGO MARQUEE (SCROLLING)
   // ==========================================
-  const frontendSkillsContainer = document.getElementById('frontend-skills-list');
-  const backendSkillsContainer = document.getElementById('backend-skills-list');
-  const toolsSkillsContainer = document.getElementById('tools-skills-list');
+  const marqueeTrack = document.getElementById('tech-marquee-track');
+  if (marqueeTrack) {
+    const techLogos = [
+      {
+        name: 'React',
+        svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg>`
+      },
+      {
+        name: 'Next.js',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 7.72 16.36L9.45 7.42v9.08H8V6.5h1.68l8.85 9.43A8.5 8.5 0 1 1 12 3.5a8.49 8.49 0 0 1 6.72 3.3l1.16-.96A9.97 9.97 0 0 0 12 2zm3.25 4.5h1.5v7.1l-1.5-1.6V6.5z"/></svg>`
+      },
+      {
+        name: 'TypeScript',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm10.71 14.86c.5.98 1.51 1.73 3.09 1.73 1.6 0 2.8-.83 2.8-2.36 0-1.41-.81-2.04-2.25-2.66l-.42-.18c-.73-.31-1.04-.52-1.04-1.02 0-.41.31-.73.81-.73.48 0 .8.21 1.09.73l1.31-.87c-.55-.96-1.33-1.33-2.4-1.33-1.51 0-2.48.96-2.48 2.23 0 1.38.81 2.03 2.03 2.55l.42.18c.78.34 1.24.55 1.24 1.13 0 .48-.45.83-1.15.83-.83 0-1.31-.43-1.67-1.03l-1.38.8zM10.42 12.6H12v-1.42H6.5v1.42h1.95v6.8h1.97v-6.8z"/></svg>`
+      },
+      {
+        name: 'JavaScript',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v18H3V3zm4.73 15.04c.4.85 1.19 1.55 2.54 1.55 1.5 0 2.53-.8 2.53-2.55v-5.78h-1.7V17c0 .86-.35 1.08-.9 1.08-.58 0-.82-.4-1.09-.87l-1.38.83zm5.98-.18c.5.98 1.51 1.73 3.09 1.73 1.6 0 2.8-.83 2.8-2.36 0-1.41-.81-2.04-2.25-2.66l-.42-.18c-.73-.31-1.04-.52-1.04-1.02 0-.41.31-.73.81-.73.48 0 .8.21 1.09.73l1.31-.87c-.55-.96-1.33-1.33-2.4-1.33-1.51 0-2.48.96-2.48 2.23 0 1.38.81 2.03 2.03 2.55l.42.18c.78.34 1.24.55 1.24 1.13 0 .48-.45.83-1.15.83-.83 0-1.31-.43-1.67-1.03l-1.38.8z"/></svg>`
+      },
+      {
+        name: 'Tailwind CSS',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 6c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.12 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.31-.74-1.91-1.35C15.61 7.15 14.47 6 12 6zM7 12c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.12 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.31-.74-1.91-1.35C10.61 13.15 9.47 12 7 12z"/></svg>`
+      },
+      {
+        name: 'Vue.js',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 4h4l6 10.4L18 4h4L12 21.3 2 4zm4.8 0h3.1l2.1 3.6L14.1 4h3.1L12 13 6.8 4z"/></svg>`
+      },
+      {
+        name: 'Node.js',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L3.5 6.9v9.8L12 21.6l8.5-4.9V6.9L12 2zm0 2.3l6.5 3.75v7.5L12 19.3l-6.5-3.75v-7.5L12 4.3zm-1.1 4.2v4.6c0 .8-.4 1.2-1.1 1.2-.5 0-.8-.2-1.1-.6l-1.3.8c.5.9 1.3 1.3 2.4 1.3 1.7 0 2.7-.9 2.7-2.6V8.5h-1.6zm3.8 0c-1.4 0-2.4.7-2.4 1.9 0 1.1.7 1.6 2 2l.7.2c.7.2 1 .4 1 .9s-.5.8-1.2.8c-.8 0-1.3-.3-1.6-.9l-1.3.8c.5 1 1.5 1.5 2.9 1.5 1.6 0 2.7-.8 2.7-2.1 0-1.1-.7-1.7-2.1-2.1l-.7-.2c-.6-.2-.9-.4-.9-.8 0-.4.4-.7 1-.7.6 0 1 .2 1.3.7l1.2-.8c-.5-.8-1.4-1.2-2.6-1.2z"/></svg>`
+      },
+      {
+        name: 'PostgreSQL',
+        svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.66 3.13 3 7 3s7-1.34 7-3V6"/><path d="M5 12v6c0 1.66 3.13 3 7 3s7-1.34 7-3v-6"/></svg>`
+      },
+      {
+        name: 'MongoDB',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.4 2.3c-.2-.2-.5-.2-.8 0C11.4 2.5 7 6.8 7 12.2c0 3.7 2.4 6.5 4.4 7.7v2.1h1.2v-2.1c2-1.2 4.4-4 4.4-7.7 0-5.4-4.4-9.7-4.6-9.9zM12 18.4c-.2-.1-.4-.3-.6-.4V8.5h1.2V18c-.2.1-.4.3-.6.4z"/></svg>`
+      },
+      {
+        name: 'Python',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.9 2C8.6 2 8.8 3.4 8.8 3.4v1.5h3.2v.5H7.5S5.5 5.2 5.5 8.5s1.7 3.2 1.7 3.2h1v-1.6s-.1-1.7 1.7-1.7h3s1.6 0 1.6-1.6V4.1S14.8 2 11.9 2zm-1.6 1.2a.6.6 0 1 1 0 1.2.6.6 0 0 1 0-1.2zm1.8 18.8c3.3 0 3.1-1.4 3.1-1.4v-1.5H12v-.5h4.5s2 .2 2-3.1-1.7-3.2-1.7-3.2h-1v1.6s.1 1.7-1.7 1.7h-3s-1.6 0-1.6 1.6v2.7s-.3 2.1 2.6 2.1zm1.6-1.2a.6.6 0 1 1 0-1.2.6.6 0 0 1 0 1.2z"/></svg>`
+      },
+      {
+        name: 'Git',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.62 11.11l-8.73-8.73a1.3 1.3 0 0 0-1.84 0L9.2 4.23l2.28 2.28a1.55 1.55 0 0 1 1.96 1.97l2.2 2.2a1.55 1.55 0 1 1-.93.88l-2.05-2.05v5.4a1.55 1.55 0 1 1-1.27-.05V9.38a1.55 1.55 0 0 1-.84-2.03L8.3 5.1 2.38 11.02a1.3 1.3 0 0 0 0 1.84l8.73 8.73a1.3 1.3 0 0 0 1.84 0l8.67-8.64a1.3 1.3 0 0 0 0-1.84z"/></svg>`
+      },
+      {
+        name: 'Docker',
+        svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 5h2.5v2.5H13V5zm-3 0h2.5v2.5H10V5zm-3 3h2.5v2.5H7V8zm3 0h2.5v2.5H10V8zm3 0h2.5v2.5H13V8zm3 0h2.5v2.5H16V8zm-9 3h2.5v2.5H7v-2.5zm3 0h2.5v2.5H10v-2.5zm3 0h2.5v2.5H13v-2.5zm7.8 1.1c-.6-.4-1.9-.5-2.7-.3-.2-.9-.8-1.7-1.5-2.2l-.3-.2-.2.3c-.4.6-.5 1.6-.2 2.3.2.4.4.7.8 1H2.3c-.2 1.7.2 3.3 1.1 4.6 1.2 1.7 3 2.6 5.6 2.6 5.2 0 9.1-2.4 10.9-6.8.7.1 2.2 0 3-1.4l.1-.2-.2-.2-.0-.5z"/></svg>`
+      },
+      {
+        name: 'Figma',
+        svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3h3v6H9a3 3 0 0 1 0-6z"/><path d="M12 3h3a3 3 0 0 1 0 6h-3V3z"/><path d="M9 9h3v6H9a3 3 0 0 1 0-6z"/><path d="M9 15h3v3a3 3 0 1 1-3-3z"/><circle cx="15" cy="12" r="3"/></svg>`
+      },
+      {
+        name: 'Linux',
+        svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><polyline points="7 9 11 12 7 15"/><line x1="13" y1="15" x2="17" y2="15"/></svg>`
+      }
+    ];
 
-  function renderSkillCategory(container, skillsList) {
-    if (!container || !Array.isArray(skillsList)) return;
-    container.innerHTML = `
-      <div class="skills-spec-list">
-        ${skillsList.map(skill => `
-          <div class="skill-spec-item">
-            <div class="skill-spec-left">
-              <span class="skill-spec-dot"></span>
-              <span class="skill-spec-name">${skill.name}</span>
-            </div>
-            <div class="skill-spec-right">
-              <div class="skill-meter-track">
-                <div class="skill-meter-fill" data-level="${skill.level}"></div>
-              </div>
-              <span class="skill-spec-pct">${skill.level}%</span>
-            </div>
-          </div>
-        `).join('')}
+    const renderSet = (isClone) => techLogos.map(item => `
+      <div class="tech-logo-item" title="${item.name}" ${isClone ? 'aria-hidden="true"' : `aria-label="${item.name}"`}>
+        <span class="tech-logo-svg">${item.svg}</span>
+        <span class="tech-logo-tooltip">${item.name}</span>
       </div>
-    `;
-  }
+    `).join('');
 
-  if (data.skills) {
-    renderSkillCategory(frontendSkillsContainer, data.skills.frontend);
-    renderSkillCategory(backendSkillsContainer, data.skills.backend);
-    renderSkillCategory(toolsSkillsContainer, data.skills.tools);
+    // Duplicate items seamlessly for infinite continuous horizontal loop
+    marqueeTrack.innerHTML = renderSet(false) + renderSet(true);
   }
 
   function triggerSkillBars() {
-    const bars = document.querySelectorAll('.skill-meter-fill');
-    bars.forEach(bar => {
-      const level = bar.getAttribute('data-level');
-      if (level) {
-        bar.style.width = level + '%';
-      }
-    });
+    // Handled cleanly via marquee CSS animation
   }
 
   // ==========================================
@@ -292,41 +326,37 @@ document.addEventListener('DOMContentLoaded', () => {
       ? data.projects 
       : data.projects.filter(p => p.category === filter);
 
-    projectsGrid.innerHTML = filtered.map((proj, idx) => `
+    projectsGrid.innerHTML = filtered.map(proj => `
       <article class="project-card reveal-on-scroll" data-id="${proj.id}">
-        <div class="project-header">
-          <div class="project-index">MODULE_${String(idx + 1).padStart(2, '0')}</div>
-          <span class="project-category-badge">${proj.categoryLabel}</span>
-        </div>
-
         <div class="project-thumbnail" onclick="openProjectModal('${proj.id}')">
           <img src="${proj.image}" alt="${proj.title}" loading="lazy" />
           <div class="project-overlay">
             <span class="project-inspect-btn">
-              <span>Inspect Architecture</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9.2-9.2M17 17V8H8"/></svg>
+              <span>Lihat Detail</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
             </span>
           </div>
         </div>
 
         <div class="project-content">
-          <div class="project-meta-line">
-            <span class="project-status-dot"></span>
-            <span class="project-highlight-text">${proj.highlights || 'Verified Production Build'}</span>
+          <div class="project-top-meta">
+            <span class="project-category-label">${proj.categoryLabel}</span>
+            ${proj.highlights ? `<span class="project-highlight-pill">${proj.highlights}</span>` : ''}
           </div>
           <h4 class="project-title" onclick="openProjectModal('${proj.id}')">${proj.title}</h4>
           <p class="project-desc">${proj.description}</p>
           
           <div class="project-tags">
-            ${proj.techStack.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+            ${proj.techStack.slice(0, 4).map(t => `<span class="tech-tag">${t}</span>`).join('')}
+            ${proj.techStack.length > 4 ? `<span class="tech-tag">+${proj.techStack.length - 4}</span>` : ''}
           </div>
 
           <div class="project-actions">
             <button class="btn btn-secondary btn-sm" onclick="openProjectModal('${proj.id}')">
-              <span>System Specs</span>
+              <span>Studi Kasus</span>
             </button>
             <a href="${proj.demoUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-              <span>Live Deployment</span>
+              <span>Kunjungi</span>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17l9.2-9.2M17 17V8H8"/></svg>
             </a>
           </div>
@@ -367,47 +397,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalProjectDetails.innerHTML = `
       <div style="margin-bottom: 1.5rem;">
-        <span class="section-tag" style="margin-bottom: 0.5rem;">${project.categoryLabel}</span>
-        <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem;">${project.title}</h2>
-        <div style="font-size: 0.85rem; color: var(--accent-secondary); font-family: var(--font-mono); font-weight: 600;">
-          ✨ ${project.highlights || 'High-Performance Architecture'}
+        <span class="section-eyebrow" style="margin-bottom: 0.4rem;">${project.categoryLabel}</span>
+        <h2 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem;">${project.title}</h2>
+        <div style="font-size: 0.84rem; color: var(--accent-primary); font-weight: 500;">
+          ${project.highlights || 'Arsitektur Siap Produksi'}
         </div>
       </div>
 
-      <div style="border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.5rem; border: 1px solid var(--border-color); background: var(--bg-primary);">
+      <div style="border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.5rem; border: 1px solid var(--border-color); background: var(--bg-secondary);">
         <img src="${project.image}" alt="${project.title}" style="width: 100%; height: auto; display: block;" />
       </div>
 
       <div style="margin-bottom: 1.5rem;">
-        <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Tentang Proyek</h4>
-        <p style="color: var(--text-secondary); line-height: 1.7;">${project.fullDescription || project.description}</p>
+        <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">Tentang Proyek</h4>
+        <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.94rem;">${project.fullDescription || project.description}</p>
       </div>
 
       <div style="margin-bottom: 1.5rem;">
-        <h4 style="font-size: 1.1rem; margin-bottom: 0.8rem;">Fitur Utama & Keunggulan</h4>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem;">
+        <h4 style="font-size: 1.05rem; margin-bottom: 0.75rem;">Fitur Utama</h4>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.55rem;">
           ${(project.features || []).map(f => `
-            <li style="display: flex; align-items: flex-start; gap: 0.6rem; color: var(--text-secondary);">
-              <span style="color: var(--success); font-weight: bold;">✓</span>
+            <li style="display: flex; align-items: flex-start; gap: 0.6rem; color: var(--text-secondary); font-size: 0.92rem;">
+              <span style="color: var(--accent-primary); font-weight: 700;">—</span>
               <span>${f}</span>
             </li>
           `).join('')}
         </ul>
       </div>
 
-      <div style="margin-bottom: 2rem;">
-        <h4 style="font-size: 1.1rem; margin-bottom: 0.6rem;">Teknologi yang Digunakan</h4>
+      <div style="margin-bottom: 1.75rem;">
+        <h4 style="font-size: 1.05rem; margin-bottom: 0.6rem;">Teknologi</h4>
         <div class="project-tags">
-          ${project.techStack.map(t => `<span class="tech-tag" style="font-size: 0.85rem; padding: 0.35rem 0.8rem;">${t}</span>`).join('')}
+          ${project.techStack.map(t => `<span class="tech-tag">${t}</span>`).join('')}
         </div>
       </div>
 
-      <div style="display: flex; gap: 1rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
         <a href="${project.demoUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
           Buka Live Demo ↗
         </a>
         <a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-          Lihat Source Code di GitHub 💻
+          Source Code (GitHub)
         </a>
       </div>
     `;
@@ -514,30 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 12. TESTIMONIALS RENDERING
-  // ==========================================
-  const testimonialsGrid = document.getElementById('testimonials-grid');
-  if (testimonialsGrid && data.testimonials) {
-    testimonialsGrid.innerHTML = data.testimonials.map((item, idx) => `
-      <div class="testimonial-card reveal-on-scroll">
-        <div class="testimonial-card-top">
-          <span class="testimonial-idx">LOG_REF // 0${idx + 1}</span>
-          <span class="testimonial-verified">VERIFIED PEER</span>
-        </div>
-        <p class="testimonial-quote">"${item.text}"</p>
-        <div class="testimonial-author">
-          <img src="${item.avatar}" alt="${item.name}" class="author-avatar" />
-          <div>
-            <div class="author-name">${item.name}</div>
-            <div class="author-role">${item.role}</div>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // ==========================================
-  // 13. INTERACTIVE PLAYGROUND (CARD STYLER)
+  // 12. INTERACTIVE PLAYGROUND (SURFACE STUDIO)
   // ==========================================
   const sliderRadius = document.getElementById('slider-radius');
   const sliderBlur = document.getElementById('slider-blur');
@@ -563,13 +570,13 @@ document.addEventListener('DOMContentLoaded', () => {
     demoCard.style.borderRadius = r + 'px';
     demoCard.style.backdropFilter = `blur(${b}px)`;
     demoCard.style.webkitBackdropFilter = `blur(${b}px)`;
-    demoCard.style.boxShadow = `0 10px 30px rgba(0,0,0,0.3), 0 0 ${g}px rgba(99, 102, 241, 0.5)`;
+    demoCard.style.boxShadow = `0 ${Math.round(g * 0.45)}px ${g}px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(212, 180, 131, ${Math.min(g / 120, 0.35).toFixed(2)})`;
 
     if (playgroundCode) {
       playgroundCode.textContent = `.card {
   border-radius: ${r}px;
   backdrop-filter: blur(${b}px);
-  box-shadow: 0 0 ${g}px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 ${Math.round(g * 0.45)}px ${g}px rgba(0, 0, 0, 0.25);
 }`;
     }
   }
