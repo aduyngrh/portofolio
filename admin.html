@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CMS Proyek — Portofolio Yudha Nugraha</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+</head>
+<body class="cms-body">
+
+  <!-- ======================================================================
+       VIEW 1: GITHUB AUTHENTICATION
+       ====================================================================== -->
+  <main id="auth-view" class="cms-auth-view">
+    <div class="cms-auth-card">
+      <div class="cms-auth-top">
+        <a href="index.html" class="cms-back-link">← Kembali ke Portofolio</a>
+        <button type="button" class="icon-btn" id="auth-theme-toggle" aria-label="Ganti Tema" title="Ganti Tema">
+          <span class="theme-icon-label">☀️</span>
+        </button>
+      </div>
+
+      <span class="section-eyebrow">Project CMS · GitHub Sync</span>
+      <h1 class="cms-auth-title">Kelola <em class="serif-accent">Proyek</em> Portofolio.</h1>
+      <p class="cms-auth-subtitle">
+        Hubungkan dengan GitHub Personal Access Token untuk menambah, mengedit, menghapus proyek, dan mengunggah gambar thumbnail langsung ke repositori GitHub Pages.
+      </p>
+
+      <div id="auth-error" class="cms-alert cms-alert-error" hidden></div>
+
+      <form id="auth-form" class="cms-auth-form">
+        <div class="form-group">
+          <label for="token-input" class="form-label">GitHub Personal Access Token (PAT)</label>
+          <div class="cms-password-wrap">
+            <input
+              type="password"
+              id="token-input"
+              class="form-control cms-mono-input"
+              placeholder="github_pat_... atau ghp_..."
+              autocomplete="off"
+              required
+            >
+            <button type="button" id="toggle-token-vis" class="cms-eye-btn" aria-label="Tampilkan atau sembunyikan token">Lihat</button>
+          </div>
+        </div>
+
+        <label class="cms-checkbox-row">
+          <input type="checkbox" id="remember-token" checked>
+          <span>Simpan token di browser ini (hanya di perangkat Anda)</span>
+        </label>
+
+        <details class="cms-details">
+          <summary>Pengaturan Repositori (Default: aduyngrh/portofolio)</summary>
+          <div class="cms-repo-grid">
+            <div class="form-group">
+              <label for="repo-owner" class="form-label">Owner / Username</label>
+              <input type="text" id="repo-owner" class="form-control" value="aduyngrh" required>
+            </div>
+            <div class="form-group">
+              <label for="repo-name" class="form-label">Nama Repo</label>
+              <input type="text" id="repo-name" class="form-control" value="portofolio" required>
+            </div>
+            <div class="form-group">
+              <label for="repo-branch" class="form-label">Branch</label>
+              <input type="text" id="repo-branch" class="form-control" value="main" required>
+            </div>
+          </div>
+        </details>
+
+        <button type="submit" id="auth-submit-btn" class="btn btn-primary cms-btn-full">
+          <span>Hubungkan &amp; Masuk</span>
+        </button>
+      </form>
+
+      <details class="cms-guide-details">
+        <summary>Cara membuat Token GitHub dalam 30 detik</summary>
+        <ol class="cms-guide-list">
+          <li>Buka halaman <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Fine-grained Personal Access Tokens</a> di GitHub.</li>
+          <li>Isi <strong>Token name</strong> (mis. <code>Portofolio CMS</code>) dan pilih masa berlaku.</li>
+          <li>Pada <strong>Repository access</strong>, pilih <strong>Only select repositories</strong> → pilih <code>portofolio</code>.</li>
+          <li>Buka <strong>Permissions → Repository permissions</strong>, ubah <strong>Contents</strong> menjadi <strong>Read and write</strong>.</li>
+          <li>Klik <strong>Generate token</strong>, lalu salin dan tempel di kolom atas.</li>
+        </ol>
+      </details>
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       VIEW 2: PROJECT CMS DASHBOARD
+       ====================================================================== -->
+  <div id="dashboard-view" class="cms-dashboard" hidden>
+    <!-- Top Header -->
+    <header class="cms-topbar">
+      <div class="container cms-topbar-inner">
+        <div class="cms-topbar-left">
+          <a href="index.html" class="cms-brand">
+            <span class="nav-avatar-dot"></span>
+            <span>Yudha</span>
+          </a>
+          <span class="cms-badge">CMS Proyek</span>
+          <span class="cms-repo-pill" id="topbar-repo-label">aduyngrh/portofolio · main</span>
+        </div>
+
+        <div class="cms-topbar-right">
+          <div class="cms-user-chip" id="user-chip">
+            <img id="user-avatar" src="" alt="" hidden>
+            <span id="user-handle">@user</span>
+          </div>
+          <a href="index.html#proyek" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+            <span>Lihat Situs ↗</span>
+          </a>
+          <button type="button" class="btn btn-secondary btn-sm" id="sync-github-btn" title="Muat ulang data terbaru dari GitHub">
+            <span>Sinkronkan</span>
+          </button>
+          <button type="button" class="icon-btn" id="dash-theme-toggle" aria-label="Ganti Tema" title="Ganti Tema">
+            <span class="theme-icon-label">☀️</span>
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm cms-logout-btn" id="logout-btn">Keluar</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sticky Draft Publish Bar -->
+    <div id="publish-banner" class="cms-publish-banner" hidden>
+      <div class="container cms-publish-inner">
+        <div class="cms-publish-info">
+          <span class="cms-status-dot"></span>
+          <div>
+            <strong>Perubahan belum dipublish ke GitHub</strong>
+            <span id="publish-summary-text" class="cms-publish-sub">Draft tersimpan lokal di browser.</span>
+          </div>
+        </div>
+        <div class="cms-publish-actions">
+          <button type="button" class="btn btn-secondary btn-sm" id="discard-draft-btn">Buang Draft</button>
+          <button type="button" class="btn btn-primary btn-sm" id="publish-all-btn">
+            <span>Publish ke GitHub</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <main class="container cms-main">
+      <div class="cms-page-head">
+        <div>
+          <span class="section-eyebrow">Manajemen Konten</span>
+          <h1 class="cms-page-title">Daftar Proyek (<span id="project-total-count">0</span>)</h1>
+          <p class="cms-page-sub">Kelola daftar karya, gambar thumbnail, kategori, daftar fitur, tech stack, serta tautan Demo &amp; GitHub.</p>
+        </div>
+        <button type="button" class="btn btn-primary" id="add-project-btn">
+          <span>+ Tambah Proyek</span>
+        </button>
+      </div>
+
+      <!-- Search & Filter Toolbar -->
+      <div class="cms-toolbar">
+        <div class="cms-search-box">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="cms-search-input" class="cms-search-input" placeholder="Cari judul, deskripsi, atau tech stack...">
+        </div>
+
+        <div class="cms-filter-tabs" id="cms-filter-tabs">
+          <button type="button" class="filter-btn active" data-filter="all">Semua</button>
+          <button type="button" class="filter-btn" data-filter="web">Web App</button>
+          <button type="button" class="filter-btn" data-filter="fullstack">AI &amp; Full-Stack</button>
+          <button type="button" class="filter-btn" data-filter="mobile">Fintech &amp; Mobile</button>
+          <button type="button" class="filter-btn" data-filter="design">Design System</button>
+        </div>
+      </div>
+
+      <!-- Projects List -->
+      <div id="admin-projects-list" class="cms-projects-list">
+        <!-- Rendered by js/admin.js -->
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================================================================
+       MODAL: ADD / EDIT PROJECT
+       ====================================================================== -->
+  <div class="modal-backdrop" id="editor-modal" aria-hidden="true">
+    <div class="modal-dialog cms-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="editor-modal-title">
+      <div class="modal-header">
+        <span class="modal-header-title" id="editor-modal-title">Tambah Proyek Baru</span>
+        <button type="button" class="modal-close-btn" id="editor-close-btn" aria-label="Tutup Editor">&times;</button>
+      </div>
+
+      <form id="project-editor-form" class="cms-editor-body">
+        <div class="cms-editor-grid">
+          <!-- Left Column: Form Inputs -->
+          <div class="cms-editor-fields">
+            <div class="cms-field-row">
+              <div class="form-group">
+                <label for="field-title" class="form-label">Judul Proyek *</label>
+                <input type="text" id="field-title" class="form-control" placeholder="Nexus Commerce - E-Commerce Platform" required>
+              </div>
+              <div class="form-group">
+                <label for="field-id" class="form-label">ID / Slug URL *</label>
+                <input type="text" id="field-id" class="form-control cms-mono-input" placeholder="nexus-commerce" required>
+              </div>
+            </div>
+
+            <div class="cms-field-row">
+              <div class="form-group">
+                <label for="field-category" class="form-label">Kategori Filter *</label>
+                <select id="field-category" class="form-control" required>
+                  <option value="web">Web App (web)</option>
+                  <option value="fullstack">AI &amp; Full-Stack (fullstack)</option>
+                  <option value="mobile">Fintech &amp; Mobile (mobile)</option>
+                  <option value="design">Design System (design)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="field-category-label" class="form-label">Label Kategori Tampil *</label>
+                <input type="text" id="field-category-label" class="form-control" placeholder="Web Application" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="field-highlights" class="form-label">Highlight Singkat</label>
+              <input type="text" id="field-highlights" class="form-control" placeholder="98+ Lighthouse Score • Zero Lag Checkout">
+            </div>
+
+            <!-- Thumbnail Upload / URL -->
+            <div class="form-group">
+              <div class="cms-label-row">
+                <label class="form-label" style="margin-bottom: 0;">Gambar Thumbnail *</label>
+                <div class="cms-seg-tabs" role="tablist">
+                  <button type="button" class="cms-seg-btn active" id="tab-upload-img">Upload File</button>
+                  <button type="button" class="cms-seg-btn" id="tab-url-img">URL / Path</button>
+                </div>
+              </div>
+
+              <!-- Upload Tab -->
+              <div id="panel-upload-img" class="cms-upload-panel">
+                <div id="thumb-dropzone" class="cms-dropzone" tabindex="0">
+                  <input type="file" id="field-image-file" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif" hidden>
+                  <div class="cms-dropzone-text">
+                    <strong>Klik untuk pilih gambar</strong> atau seret file ke sini
+                    <span>PNG, JPG, WEBP, SVG · Maks 3 MB (otomatis disimpan ke <code>assets/images/projects/</code>)</span>
+                  </div>
+                </div>
+                <div id="upload-file-meta" class="cms-upload-meta" hidden>
+                  <span id="upload-file-name"></span>
+                  <button type="button" id="clear-upload-btn" class="cms-link-btn">Batalkan file</button>
+                </div>
+              </div>
+
+              <!-- URL / Path Tab -->
+              <div id="panel-url-img" class="cms-url-panel" hidden>
+                <input type="text" id="field-image-url" class="form-control cms-mono-input" placeholder="assets/images/projects/project-1.svg atau https://...">
+                <div class="cms-presets-row">
+                  <span>Template bawaan:</span>
+                  <button type="button" class="cms-preset-chip" data-img="assets/images/projects/project-1.svg">1</button>
+                  <button type="button" class="cms-preset-chip" data-img="assets/images/projects/project-2.svg">2</button>
+                  <button type="button" class="cms-preset-chip" data-img="assets/images/projects/project-3.svg">3</button>
+                  <button type="button" class="cms-preset-chip" data-img="assets/images/projects/project-4.svg">4</button>
+                  <button type="button" class="cms-preset-chip" data-img="assets/images/projects/project-5.svg">5</button>
+                  <button type="button" class="cms-preset-chip" data-img="assets/images/projects/project-6.svg">6</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="field-description" class="form-label">Deskripsi Singkat (Kartu Grid) *</label>
+              <textarea id="field-description" class="form-control cms-textarea-sm" placeholder="Ringkasan singkat proyek yang tampil di kartu portofolio..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="field-full-description" class="form-label">Deskripsi Lengkap (Modal Studi Kasus)</label>
+              <textarea id="field-full-description" class="form-control" placeholder="Penjelasan mendalam tentang arsitektur, tujuan, dan hasil proyek..."></textarea>
+            </div>
+
+            <!-- Dynamic Features List -->
+            <div class="form-group">
+              <div class="cms-label-row">
+                <label class="form-label" style="margin-bottom: 0;">Fitur Utama</label>
+                <button type="button" id="add-feature-btn" class="cms-link-btn">+ Tambah Fitur</button>
+              </div>
+              <div id="features-builder" class="cms-features-builder"></div>
+            </div>
+
+            <!-- Interactive Tech Stack Chips -->
+            <div class="form-group">
+              <label for="tech-chip-input" class="form-label">Tech Stack (tekan Enter atau koma untuk menambah)</label>
+              <div class="cms-chips-box" id="tech-chips-box">
+                <div id="tech-chips-list" class="cms-chips-list"></div>
+                <input type="text" id="tech-chip-input" class="cms-chip-input" placeholder="Ketik teknologi (mis. Next.js)...">
+              </div>
+              <div class="cms-presets-row" id="tech-suggestions">
+                <span>Saran cepat:</span>
+                <button type="button" class="cms-preset-chip" data-tech="Next.js">+ Next.js</button>
+                <button type="button" class="cms-preset-chip" data-tech="React">+ React</button>
+                <button type="button" class="cms-preset-chip" data-tech="TypeScript">+ TypeScript</button>
+                <button type="button" class="cms-preset-chip" data-tech="Tailwind CSS">+ Tailwind CSS</button>
+                <button type="button" class="cms-preset-chip" data-tech="Node.js">+ Node.js</button>
+                <button type="button" class="cms-preset-chip" data-tech="PostgreSQL">+ PostgreSQL</button>
+                <button type="button" class="cms-preset-chip" data-tech="Supabase">+ Supabase</button>
+                <button type="button" class="cms-preset-chip" data-tech="Docker">+ Docker</button>
+              </div>
+            </div>
+
+            <div class="cms-field-row">
+              <div class="form-group">
+                <label for="field-demo-url" class="form-label">Link Live Demo</label>
+                <input type="url" id="field-demo-url" class="form-control" placeholder="https://demo-proyek.com">
+              </div>
+              <div class="form-group">
+                <label for="field-github-url" class="form-label">Link GitHub</label>
+                <input type="url" id="field-github-url" class="form-control" placeholder="https://github.com/aduyngrh/repo">
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Card Preview -->
+          <aside class="cms-editor-preview">
+            <div class="cms-preview-sticky">
+              <div class="cms-preview-label">Pratinjau Kartu Portofolio</div>
+              <div id="live-card-preview"></div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="cms-editor-footer">
+          <button type="button" class="btn btn-secondary" id="editor-cancel-btn">Batal</button>
+          <div class="cms-editor-footer-right">
+            <button type="button" class="btn btn-secondary" id="save-draft-btn">Simpan Draft</button>
+            <button type="submit" class="btn btn-primary" id="save-publish-btn">
+              <span>Simpan &amp; Publish ke GitHub</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL: DELETE CONFIRMATION
+       ====================================================================== -->
+  <div class="modal-backdrop" id="delete-modal" aria-hidden="true">
+    <div class="modal-dialog cms-confirm-dialog" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <span class="modal-header-title">Hapus Proyek</span>
+        <button type="button" class="modal-close-btn" id="delete-close-btn" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="cms-confirm-text">
+          Anda yakin ingin menghapus proyek <strong id="delete-project-name"></strong>?
+        </p>
+        <p class="cms-confirm-note">
+          Proyek akan dihapus dari daftar <code>data/projects.json</code> (file gambar lama di repositori tidak otomatis dihapus agar aman).
+        </p>
+        <div class="cms-confirm-actions">
+          <button type="button" class="btn btn-secondary btn-sm" id="delete-cancel-btn">Batal</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="delete-draft-btn">Hapus di Draft</button>
+          <button type="button" class="btn btn-primary btn-sm cms-btn-danger" id="delete-publish-btn">Hapus &amp; Publish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="cms-toast" class="cms-toast" role="status" aria-live="polite"></div>
+
+  <script src="js/projects-data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

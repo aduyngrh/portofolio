@@ -314,55 +314,97 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
-  // 8. RENDER & FILTER PROJECTS
+  // 8. RENDER & FILTER PROJECTS (WITH CMS JSON SYNC)
   // ==========================================
   const projectsGrid = document.getElementById('projects-grid');
   const filterBtns = document.querySelectorAll('.filter-btn');
+  let activeProjectFilter = 'all';
+
+  function escapeProjectHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function sanitizeProjectUrl(url) {
+    const val = String(url || '').trim();
+    if (!val || val === '#') return '';
+    if (/^(https?:\/\/|assets\/|\.\/assets\/|data:image\/)/i.test(val)) {
+      return val;
+    }
+    return '';
+  }
 
   function renderProjects(filter = 'all') {
+    activeProjectFilter = filter;
     if (!projectsGrid || !data.projects) return;
 
-    const filtered = filter === 'all' 
-      ? data.projects 
+    const filtered = filter === 'all'
+      ? data.projects
       : data.projects.filter(p => p.category === filter);
 
-    projectsGrid.innerHTML = filtered.map(proj => `
-      <article class="project-card reveal-on-scroll" data-id="${proj.id}">
-        <div class="project-thumbnail" onclick="openProjectModal('${proj.id}')">
-          <img src="${proj.image}" alt="${proj.title}" loading="lazy" />
-          <div class="project-overlay">
-            <span class="project-inspect-btn">
-              <span>Lihat Detail</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-            </span>
-          </div>
+    if (filtered.length === 0) {
+      projectsGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; border: 1px dashed var(--border-color); border-radius: var(--radius-lg); color: var(--text-secondary);">
+          Belum ada proyek pada kategori ini.
         </div>
+      `;
+      return;
+    }
 
-        <div class="project-content">
-          <div class="project-top-meta">
-            <span class="project-category-label">${proj.categoryLabel}</span>
-            ${proj.highlights ? `<span class="project-highlight-pill">${proj.highlights}</span>` : ''}
-          </div>
-          <h4 class="project-title" onclick="openProjectModal('${proj.id}')">${proj.title}</h4>
-          <p class="project-desc">${proj.description}</p>
-          
-          <div class="project-tags">
-            ${proj.techStack.slice(0, 4).map(t => `<span class="tech-tag">${t}</span>`).join('')}
-            ${proj.techStack.length > 4 ? `<span class="tech-tag">+${proj.techStack.length - 4}</span>` : ''}
+    projectsGrid.innerHTML = filtered.map(proj => {
+      const safeId = escapeProjectHtml(proj.id);
+      const safeTitle = escapeProjectHtml(proj.title);
+      const safeCategoryLabel = escapeProjectHtml(proj.categoryLabel || proj.category);
+      const safeHighlights = escapeProjectHtml(proj.highlights);
+      const safeDesc = escapeProjectHtml(proj.description);
+      const safeImg = escapeProjectHtml(sanitizeProjectUrl(proj.image) || 'assets/images/projects/project-1.svg');
+      const safeDemoUrl = sanitizeProjectUrl(proj.demoUrl);
+      const stack = Array.isArray(proj.techStack) ? proj.techStack : [];
+
+      return `
+        <article class="project-card reveal-on-scroll" data-id="${safeId}">
+          <div class="project-thumbnail" onclick="openProjectModal('${safeId}')">
+            <img src="${safeImg}" alt="${safeTitle}" loading="lazy" />
+            <div class="project-overlay">
+              <span class="project-inspect-btn">
+                <span>Lihat Detail</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </span>
+            </div>
           </div>
 
-          <div class="project-actions">
-            <button class="btn btn-secondary btn-sm" onclick="openProjectModal('${proj.id}')">
-              <span>Studi Kasus</span>
-            </button>
-            <a href="${proj.demoUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-              <span>Kunjungi</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17l9.2-9.2M17 17V8H8"/></svg>
-            </a>
+          <div class="project-content">
+            <div class="project-top-meta">
+              <span class="project-category-label">${safeCategoryLabel}</span>
+              ${safeHighlights ? `<span class="project-highlight-pill">${safeHighlights}</span>` : ''}
+            </div>
+            <h4 class="project-title" onclick="openProjectModal('${safeId}')">${safeTitle}</h4>
+            <p class="project-desc">${safeDesc}</p>
+
+            <div class="project-tags">
+              ${stack.slice(0, 4).map(t => `<span class="tech-tag">${escapeProjectHtml(t)}</span>`).join('')}
+              ${stack.length > 4 ? `<span class="tech-tag">+${stack.length - 4}</span>` : ''}
+            </div>
+
+            <div class="project-actions">
+              <button class="btn btn-secondary btn-sm" onclick="openProjectModal('${safeId}')">
+                <span>Studi Kasus</span>
+              </button>
+              ${safeDemoUrl ? `
+                <a href="${escapeProjectHtml(safeDemoUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                  <span>Kunjungi</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17l9.2-9.2M17 17V8H8"/></svg>
+                </a>
+              ` : ''}
+            </div>
           </div>
-        </div>
-      </article>
-    `).join('');
+        </article>
+      `;
+    }).join('');
 
     // Trigger reveal classes
     setTimeout(() => {
@@ -380,8 +422,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Render initial projects
+  // Render initial fallback projects immediately, then hydrate from data/projects.json
   renderProjects('all');
+
+  if (typeof fetch === 'function' && window.location.protocol !== 'file:') {
+    fetch('data/projects.json?v=' + Date.now(), { cache: 'no-store' })
+      .then(res => (res.ok ? res.json() : null))
+      .then(payload => {
+        const loaded = Array.isArray(payload)
+          ? payload
+          : (payload && Array.isArray(payload.projects) ? payload.projects : null);
+        if (loaded) {
+          data.projects = loaded;
+          renderProjects(activeProjectFilter);
+        }
+      })
+      .catch(() => {
+        // Keep PORTFOLIO_DATA fallback when offline or unavailable
+      });
+  }
 
   // ==========================================
   // 9. PROJECT DETAIL MODAL
@@ -395,51 +454,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const project = data.projects.find(p => p.id === projectId);
     if (!project) return;
 
+    const safeTitle = escapeProjectHtml(project.title);
+    const safeCategoryLabel = escapeProjectHtml(project.categoryLabel || project.category);
+    const safeHighlights = escapeProjectHtml(project.highlights || 'Arsitektur Siap Produksi');
+    const safeImg = escapeProjectHtml(sanitizeProjectUrl(project.image) || 'assets/images/projects/project-1.svg');
+    const safeFullDesc = escapeProjectHtml(project.fullDescription || project.description);
+    const safeDemoUrl = sanitizeProjectUrl(project.demoUrl);
+    const safeGithubUrl = sanitizeProjectUrl(project.githubUrl);
+    const features = Array.isArray(project.features) ? project.features : [];
+    const stack = Array.isArray(project.techStack) ? project.techStack : [];
+
     modalProjectDetails.innerHTML = `
       <div style="margin-bottom: 1.5rem;">
-        <span class="section-eyebrow" style="margin-bottom: 0.4rem;">${project.categoryLabel}</span>
-        <h2 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem;">${project.title}</h2>
+        <span class="section-eyebrow" style="margin-bottom: 0.4rem;">${safeCategoryLabel}</span>
+        <h2 style="font-size: 1.65rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem;">${safeTitle}</h2>
         <div style="font-size: 0.84rem; color: var(--accent-primary); font-weight: 500;">
-          ${project.highlights || 'Arsitektur Siap Produksi'}
+          ${safeHighlights}
         </div>
       </div>
 
       <div style="border-radius: var(--radius-md); overflow: hidden; margin-bottom: 1.5rem; border: 1px solid var(--border-color); background: var(--bg-secondary);">
-        <img src="${project.image}" alt="${project.title}" style="width: 100%; height: auto; display: block;" />
+        <img src="${safeImg}" alt="${safeTitle}" style="width: 100%; height: auto; display: block;" />
       </div>
 
       <div style="margin-bottom: 1.5rem;">
         <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">Tentang Proyek</h4>
-        <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.94rem;">${project.fullDescription || project.description}</p>
+        <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.94rem;">${safeFullDesc}</p>
       </div>
 
-      <div style="margin-bottom: 1.5rem;">
-        <h4 style="font-size: 1.05rem; margin-bottom: 0.75rem;">Fitur Utama</h4>
-        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.55rem;">
-          ${(project.features || []).map(f => `
-            <li style="display: flex; align-items: flex-start; gap: 0.6rem; color: var(--text-secondary); font-size: 0.92rem;">
-              <span style="color: var(--accent-primary); font-weight: 700;">—</span>
-              <span>${f}</span>
-            </li>
-          `).join('')}
-        </ul>
-      </div>
+      ${features.length > 0 ? `
+        <div style="margin-bottom: 1.5rem;">
+          <h4 style="font-size: 1.05rem; margin-bottom: 0.75rem;">Fitur Utama</h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.55rem;">
+            ${features.map(f => `
+              <li style="display: flex; align-items: flex-start; gap: 0.6rem; color: var(--text-secondary); font-size: 0.92rem;">
+                <span style="color: var(--accent-primary); font-weight: 700;">—</span>
+                <span>${escapeProjectHtml(f)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      ` : ''}
 
       <div style="margin-bottom: 1.75rem;">
         <h4 style="font-size: 1.05rem; margin-bottom: 0.6rem;">Teknologi</h4>
         <div class="project-tags">
-          ${project.techStack.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+          ${stack.map(t => `<span class="tech-tag">${escapeProjectHtml(t)}</span>`).join('')}
         </div>
       </div>
 
-      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
-        <a href="${project.demoUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-          Buka Live Demo ↗
-        </a>
-        <a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-          Source Code (GitHub)
-        </a>
-      </div>
+      ${(safeDemoUrl || safeGithubUrl) ? `
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+          ${safeDemoUrl ? `
+            <a href="${escapeProjectHtml(safeDemoUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              Buka Live Demo ↗
+            </a>
+          ` : ''}
+          ${safeGithubUrl ? `
+            <a href="${escapeProjectHtml(safeGithubUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              Source Code (GitHub)
+            </a>
+          ` : ''}
+        </div>
+      ` : ''}
     `;
 
     projectModalBackdrop.classList.add('open');
@@ -729,6 +806,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const list = [
       // Quick Actions
       { id: 'cv', group: 'Aksi Cepat', title: 'Lihat & Unduh Resume / CV', desc: 'Ringkasan keahlian & opsi cetak PDF', icon: '📄', badge: 'Aksi', action: () => { if (cvModalBtn) cvModalBtn.click(); } },
+      { id: 'cms-admin', group: 'Aksi Cepat', title: 'Kelola Proyek (CMS Admin)', desc: 'Tambah, edit, hapus & upload thumbnail proyek', icon: '⚙️', badge: 'CMS', action: () => { window.location.href = 'admin.html'; } },
       { id: 'theme', group: 'Aksi Cepat', title: 'Ganti Tema (Gelap / Terang)', desc: 'Alihkan mode tampilan layar', icon: '🌓', badge: 'Aksi', action: () => { if (themeToggleBtn) themeToggleBtn.click(); } },
       { id: 'sound', group: 'Aksi Cepat', title: 'Toggle Efek Suara', desc: 'Aktifkan atau senyapkan efek audio synthesizer', icon: '🔊', badge: 'Aksi', action: () => { if (soundToggleBtn) soundToggleBtn.click(); } },
       { id: 'copy-email', group: 'Aksi Cepat', title: 'Salin Alamat Email', desc: data.profile ? data.profile.email : 'yudhanugraha081@gmail.com', icon: '📋', badge: 'Aksi', action: () => { if (copyEmailBtn) copyEmailBtn.click(); } },
