@@ -1506,6 +1506,18 @@ textarea.form-control {
   color: var(--text-muted);
 }
 
+.footer-admin-link {
+  color: var(--text-muted);
+  opacity: 0.72;
+  text-decoration: none;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.footer-admin-link:hover {
+  color: var(--accent-primary);
+  opacity: 1;
+}
+
 /* ==========================================================================
    BACK TO TOP, MODALS, COMMAND PALETTE & TOAST
    ========================================================================== */
